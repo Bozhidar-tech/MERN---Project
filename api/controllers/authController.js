@@ -1,8 +1,6 @@
 import User from '../models/User.js';
-import { CreateSuccess } from '../utils/success.js';
-import { CreateError } from '../utils/error.js';
 import bcrypt from 'bcryptjs';
-
+import { errorHandler} from '../utils/error.js';
 
 export const register = async (req,res) => {
     try {
@@ -14,8 +12,8 @@ export const register = async (req,res) => {
             password:  hashedPassword
         });
         await user.save();
-        return res.status(200).json(CreateSuccess(user));
+        return res.status(200).json({ message: "User registered successfully!" });
     } catch (error) {
-        return res.status(500).json(CreateError(error.message));
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 };
