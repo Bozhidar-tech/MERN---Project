@@ -16,33 +16,41 @@ export default function Register() {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          setLoading(true);
-
-        const res = await fetch('/api/auth/register', 
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData),
-          });
-
+      e.preventDefault();
+    
+      if (!formData.username || !formData.email || !formData.password) {
+        setError('All fields are required.');
+        return;
+      }
+    
+      try {
+        setLoading(true);
+        setError(null);
+    
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData),
+        });
+    
         const data = await res.json();
-        
-        if(data.success === false){
+    
+        if (!res.ok) {
           setLoading(false);
-          setError(data.message);
+          setError(data.message || 'Registration failed. Please try again.');
           return;
         }
+    
         setLoading(false);
         setError(null);
+        alert('Registration successful!');
         navigate('/login');
-        } catch (error) {
-          setLoading(false);
-          setError('An error occurred while registering. Please try again.');
-        }
+      } catch (error) {
+        setLoading(false);
+        setError('An unexpected error occurred. Please try again.');
+      }
     };
 
   return (
