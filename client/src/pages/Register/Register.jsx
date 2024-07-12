@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import OAuth from '../../components/OAuth/OAuth.jsx';
 
 export default function Register() {
 
@@ -67,6 +68,7 @@ export default function Register() {
         className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
         <button disabled={loading} className='text-white p-3 rounded-lg uppercase hover:opacity-95 
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Loading...' : 'Register'}</button>
+        <OAuth/>
       </form>
       <div className='flex gap-2 mt-5'>
         <p>Have an account? </p>
