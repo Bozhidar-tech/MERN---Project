@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../../redux/user/userSlice.js';
+
 
 export default function Login() {
 
     const [formData, setFormData] = useState({});
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { loading, error } = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         setFormData({
@@ -17,39 +20,25 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-    
-      if (!formData.email || !formData.password) {
-        setError('All fields are required.');
-        return;
-      }
-    
       try {
-        setLoading(true);
-        setError(null);
-    
+        dispatch(loginStart());
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
         });
-    
         const data = await res.json();
-    
-        if (!res.ok) {
-          setLoading(false);
-          setError(data.message || 'Login failed. Please try again.');
+
+        if (data.success === false) {
+          dispatch(loginFailure(data.message));
           return;
         }
-    
-        setLoading(false);
-        setError(null);
-        alert('Login successful!');
+        dispatch(loginSuccess(data));
         navigate('/');
       } catch (error) {
-        setLoading(false);
-        setError('An unexpected error occurred. Please try again.');
+        dispatch(loginFailure(error.message));
       }
     };
 
