@@ -1,10 +1,13 @@
 import express from 'express';
 import mongoose from'mongoose';
 import dotenv from 'dotenv';
+import userRouter from './routes/userRouter.js';
+import authRouter from './routes/authRouter.js';
 
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 const connectMongoDB = async()=>{
     try{
@@ -20,3 +23,4 @@ app.listen(3000, () => {
     });
 
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
