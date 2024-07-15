@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { app } from "../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { updateStart, updateSuccess, updateFailure, deleteFailure, deleteStart, deleteSuccess, logoutStart, logoutFailure, logoutSuccess } from "../../redux/user/userSlice";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const fileInput = useRef(null);
@@ -165,6 +166,9 @@ export default function Profile() {
         >
           {loadingState ? 'Loading...' : 'Update Information'}
         </button>
+        <Link className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95" to={"/add-property"}>
+          Add Property
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span onClick={deleteHandler} className="text-red-700 cursor-pointer">Delete Account</span>

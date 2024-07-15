@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 import Header from './components/Header/Header';
 import RouteGuard from './components/RouteGuard/RouteGuard';
+import AddProperty from './pages/AddProperty/AddProperty';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<RouteGuard />} >
           <Route path="/profile" element={<Profile />} />
+          <Route path="/add-property" element={<AddProperty />} />
         </Route>
       </Routes>
     </BrowserRouter>
