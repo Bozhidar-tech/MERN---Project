@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { app } from "../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-import { updateStart, updateSuccess, updateFailure } from "../../redux/user/userSlice";
+import { updateStart, updateSuccess, updateFailure, deleteFailure, deleteStart, deleteSuccess } from "../../redux/user/userSlice";
 
 export default function Profile() {
   const fileInput = useRef(null);
@@ -74,6 +74,22 @@ export default function Profile() {
     }, 500);
   };
 
+  const deleteHandler = async () => {
+    try {
+      dispatch(deleteStart());
+      const deleteUser = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await deleteUser.json();
+      if (data.success === false) {
+        dispatch(deleteFailure(data.message || 'Delete failed. Please try again.'));
+      }
+      dispatch(deleteSuccess(data));
+    } catch (error) {
+      dispatch(deleteFailure(error.message));
+    }
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">My Profile</h1>
@@ -136,7 +152,7 @@ export default function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span onClick={deleteHandler} className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-blue-700 cursor-pointer">Logout</span>
       </div>
       {error && <p className="text-red-500">{error}</p>}
