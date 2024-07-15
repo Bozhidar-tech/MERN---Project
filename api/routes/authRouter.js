@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, googleLogin } from "../controllers/authController.js";
+import { register, login, googleLogin, logout } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.post("/login", login);
 
 //Google login
 router.post("/google", googleLogin);
+
+// Logout
+router.get("/logout", logout);
 
 export default router;

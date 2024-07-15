@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { app } from "../../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-import { updateStart, updateSuccess, updateFailure, deleteFailure, deleteStart, deleteSuccess } from "../../redux/user/userSlice";
+import { updateStart, updateSuccess, updateFailure, deleteFailure, deleteStart, deleteSuccess, logoutStart, logoutFailure, logoutSuccess } from "../../redux/user/userSlice";
 
 export default function Profile() {
   const fileInput = useRef(null);
@@ -48,7 +48,7 @@ export default function Profile() {
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     setLoadingState(true);
     setTimeout(async () => {
@@ -88,12 +88,27 @@ export default function Profile() {
     } catch (error) {
       dispatch(deleteFailure(error.message));
     }
+  };
+
+  const logoutHandler = async () => {
+    try {
+      dispatch(logoutStart);
+      const logoutUser = await fetch('/api/auth/logout');
+      const data = await logoutUser.json();
+      if (data.success === false) {
+        dispatch(logoutFailure(data.message || 'Logout failed. Please try again.'));
+        return;
+      }
+      dispatch(logoutSuccess(data));
+    } catch (error) {
+      dispatch(logoutFailure(error.message));
+    }
   }
 
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">My Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={submitHandler} className="flex flex-col gap-4">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -153,7 +168,7 @@ export default function Profile() {
       </form>
       <div className="flex justify-between mt-5">
         <span onClick={deleteHandler} className="text-red-700 cursor-pointer">Delete Account</span>
-        <span className="text-blue-700 cursor-pointer">Logout</span>
+        <span onClick={logoutHandler} className="text-blue-700 cursor-pointer">Logout</span>
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {successfulUpdate && (

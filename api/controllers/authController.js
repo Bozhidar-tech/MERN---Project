@@ -70,3 +70,7 @@ export const googleLogin = async (req, res, next) => {
     }
 };
 
+export const logout = (req, res) => {
+    res.clearCookie('access_token').status(200).json({ message: "Logged out successfully!" });
+} 
+
