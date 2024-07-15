@@ -32,7 +32,7 @@ export default function OAuth() {
   return (
     <button onClick={handleGoogleAuth} type='button' className='text-white p-3 rounded-lg uppercase hover:opacity-95 
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>
-      Continue with Google
+      Login with Google
     </button>
   )
 }
