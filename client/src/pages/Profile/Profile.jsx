@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { app } from "../../firebase";
 import {
@@ -302,7 +302,7 @@ export default function Profile() {
                 >
                   Delete
                 </button>
-                <Link to={`/update-property/${property._id}`}>
+                <Link to={`/edit-property/${property._id}`}>
                   <button className='text-green-700 uppercase'>Edit</button>
                 </Link>
               </div>

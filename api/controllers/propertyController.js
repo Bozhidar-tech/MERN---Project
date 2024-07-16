@@ -51,3 +51,15 @@ export const editProperty = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getProperty = async (req, res, next) => {
+    try {
+        const property = await Property.findById(req.params.id);
+        if(!property) {
+            return next(errorHandler(404, 'Property not found!'));
+        }
+        res.status(200).json(property);
+    } catch (error) {
+        next(error);
+    }
+};

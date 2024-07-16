@@ -33,6 +33,14 @@ const PropertySchema = mongoose.Schema({
         type: Boolean,
         required: true
     },
+    gas: {
+        type: Boolean,
+        required: true
+    },
+    electricity: {
+        type: Boolean,
+        required: true
+    },
     type:{
         type: String,
         required: true

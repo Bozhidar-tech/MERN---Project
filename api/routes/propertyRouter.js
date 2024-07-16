@@ -1,5 +1,5 @@
 import express from "express";
-import { addProperty, deleteProperty, editProperty } from "../controllers/propertyController.js";
+import { addProperty, deleteProperty, editProperty, getProperty } from "../controllers/propertyController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.delete('/delete/:id', verifyToken, deleteProperty);
 
 // Edit property by ID
 router.post('/edit/:id', verifyToken, editProperty);
+
+// Get a property by ID
+router.get('/get/:id', getProperty);
 
 export default router; 

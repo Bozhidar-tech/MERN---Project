@@ -4,10 +4,10 @@ import {
   uploadBytesResumable,
   ref,
 } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { app } from "../../firebase";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AddProperty() {
   const { currentUser } = useSelector((state) => state.user);
@@ -31,6 +31,23 @@ export default function AddProperty() {
   const [error, setError] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      const propertyId = params.propertyId;
+      const res = await fetch(`/api/property/get/${propertyId}`);
+      const data = await res.json();
+
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setFormData(data);
+    };
+
+    fetchProperty();
+  }, [params.propertyId]);
 
   const imageSubmitHandler = (e) => {
     if (files.length === 0) {
@@ -39,7 +56,7 @@ export default function AddProperty() {
       return;
     }
 
-    if (files.length > 0 && files.length + formData.imageUrls.length < 11) {
+    if (files.length > 0 && files.length + formData.images.length < 11) {
       setUploading(true);
       setImageUploadError(false);
       const uploadedImages = [];
@@ -52,7 +69,7 @@ export default function AddProperty() {
         .then((urls) => {
           setFormData({
             ...formData,
-            imageUrls: formData.imageUrls.concat(urls),
+            images: formData.images.concat(urls),
           });
           setImageUploadError(false);
           setUploading(false);
@@ -94,7 +111,7 @@ export default function AddProperty() {
   const imageDeleteHandler = (index) => {
     setFormData({
       ...formData,
-      imageUrls: formData.imageUrls.filter((_, i) => i !== index),
+      images: formData.images.filter((_, i) => i !== index),
     });
   };
 
@@ -134,11 +151,11 @@ export default function AddProperty() {
     e.preventDefault();
 
     try {
-      if (formData.imageUrls.length < 1)
+      if (formData.images.length < 1)
         return setError("You must upload at least one image");
       setLoadingState(true);
       setError(false);
-      const data = await fetch("/api/property/add", {
+      const data = await fetch(`/api/property/edit/${params.propertyId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +166,7 @@ export default function AddProperty() {
       setLoadingState(false);
       if (responseData.success === false) {
         setError(responseData.message);
-      };
+      }
       navigate(`/property/${responseData._id}`);
     } catch (error) {
       setError(error.message);
@@ -161,7 +178,7 @@ export default function AddProperty() {
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <main className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
         <h1 className="text-4xl font-bold text-center my-8 text-gray-800">
-          Add a Property
+          Edit a Property
         </h1>
 
         <form
@@ -178,7 +195,7 @@ export default function AddProperty() {
               minLength="10"
               required
               onChange={changesHandler}
-              value={formData.title}
+              value={formData.title || ""}
             />
             <textarea
               type="text"
@@ -206,8 +223,9 @@ export default function AddProperty() {
             <div className="flex gap-6 flex-wrap">
               <div className="flex items-center gap-2">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="house"
+                  name="type"
                   className="w-5 h-5"
                   onChange={changesHandler}
                   checked={formData.type === "house"}
@@ -216,8 +234,9 @@ export default function AddProperty() {
               </div>
               <div className="flex items-center gap-2">
                 <input
-                  type="checkbox"
+                  type="radio"
                   id="apartment"
+                  name="type"
                   className="w-5 h-5"
                   onChange={changesHandler}
                   checked={formData.type === "apartment"}
@@ -319,14 +338,15 @@ export default function AddProperty() {
             </p>
 
             <div className="flex gap-4">
-              <input
-                onChange={(e) => setFiles(e.target.files)}
-                className="p-4 border border-gray-300 rounded w-full shadow-sm"
-                type="file"
-                id="images"
-                accept="image/*"
-                multiple
-              />
+                <input
+                  onChange={(e) => setFiles(e.target.files)}
+                  className="p-4 border border-gray-300 rounded w-full shadow-sm"
+                  type="file"
+                  id="images"
+                  accept="image/*"
+                  multiple
+                />
+
               <button
                 type="button"
                 disabled={uploading}
@@ -339,8 +359,8 @@ export default function AddProperty() {
             {imageUploadError && (
               <div className="text-red-700">{imageUploadError}</div>
             )}
-            {formData.imageUrls.length > 0 &&
-              formData.imageUrls.map((url, index) => (
+            {formData.images.length > 0 &&
+              formData.images.map((url, index) => (
                 <div
                   key={url}
                   className="flex justify-between p-3 border items-center"
@@ -359,8 +379,11 @@ export default function AddProperty() {
                   </button>
                 </div>
               ))}
-            <button disabled={loadingState || uploading} className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-              {loadingState ? "Adding Property..." : "Add Property"}
+            <button
+              disabled={loadingState || uploading}
+              className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            >
+              {loadingState ? "Editing Property..." : "Edit Property"}
             </button>
             {error && <div className="text-red-700">{error}</div>}
           </div>
