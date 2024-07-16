@@ -1,5 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import User from '../models/User.js';
+import Property from '../models/Property.js';
 import { errorHandler } from '../utils/error.js';
 
 export const updateUser = async (req, res, next) => {
@@ -35,4 +36,20 @@ export const deleteUser = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const getUserProperties = async (req, res, next) => {
+
+  if(req.user.id === req.params.id){
+    try {
+      const properties = await Property.find({
+        userRef: req.params.id
+      });
+      res.status(200).json(properties);
+    } catch (error) {
+      next(error);
+    }
+  }else{
+    return next(errorHandler(401, 'You can only view your own properties!'));
+  }
+};

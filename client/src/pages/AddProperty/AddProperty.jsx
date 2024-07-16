@@ -151,7 +151,7 @@ export default function AddProperty() {
       if (data.success === false) {
         setError(responseData.message);
       };
-      navigate(`/properties/${responseData._id}`);
+      navigate('/profile');
     } catch (error) {
       setError(error.message);
       setLoadingState(false);
