@@ -6,14 +6,31 @@ import {
 } from "firebase/storage";
 import React, { useState } from "react";
 import { app } from "../../firebase";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProperty() {
+  const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
+    title: "",
+    description: "",
+    price: "",
+    location: "",
+    bathrooms: 0,
+    bedrooms: 0,
+    furnished: false,
+    parking: false,
+    gas: false,
+    electricity: false,
+    type: "house",
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
+  const navigate = useNavigate();
 
   const imageSubmitHandler = (e) => {
     if (files.length === 0) {
@@ -82,6 +99,65 @@ export default function AddProperty() {
     });
   };
 
+  const changesHandler = (e) => {
+    if (e.target.id === "house" || e.target.id === "apartment") {
+      setFormData({
+        ...formData,
+        type: e.target.id,
+      });
+    }
+
+    if (
+      e.target.id === "furnished" ||
+      e.target.id === "parking" ||
+      e.target.id === "gas" ||
+      e.target.id === "electricity"
+    ) {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.checked,
+      });
+    }
+
+    if (
+      e.target.type === "number" ||
+      e.target.type === "text" ||
+      e.target.type === "textarea"
+    ) {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      });
+    }
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (formData.imageUrls.length < 1)
+        return setError("You must upload at least one image");
+      setLoadingState(true);
+      setError(false);
+      const data = await fetch("/api/properties/add-property", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+      });
+      const responseData = await data.json();
+      setLoadingState(false);
+      if (data.success === false) {
+        setError(responseData.message);
+      };
+      navigate(`/properties/${responseData._id}`);
+    } catch (error) {
+      setError(error.message);
+      setLoadingState(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <main className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
@@ -89,7 +165,10 @@ export default function AddProperty() {
           Add a Property
         </h1>
 
-        <form className="flex flex-col sm:flex-row gap-6">
+        <form
+          onSubmit={submitHandler}
+          className="flex flex-col sm:flex-row gap-6"
+        >
           <div className="flex flex-col flex-1 gap-6">
             <input
               type="text"
@@ -99,14 +178,19 @@ export default function AddProperty() {
               maxLength="50"
               minLength="10"
               required
+              onChange={changesHandler}
+              value={formData.title}
             />
             <textarea
+              type="text"
               placeholder="Description"
               className="border p-4 rounded-lg shadow-sm"
               id="description"
               maxLength="100"
               minLength="10"
               required
+              onChange={changesHandler}
+              value={formData.description}
             />
             <input
               type="text"
@@ -116,25 +200,71 @@ export default function AddProperty() {
               maxLength="30"
               minLength="10"
               required
+              onChange={changesHandler}
+              value={formData.location}
             />
 
             <div className="flex gap-6 flex-wrap">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" id="furnished" className="w-5 h-5" />
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="house"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.type === "house"}
+                />
+                <span>House</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="apartment"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.type === "apartment"}
+                />
+                <span>Apartment</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="furnished"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.furnished}
+                />
                 <span>Furnished</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" id="parking" className="w-5 h-5" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="parking"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.parking}
+                />
                 <span>Parking Spot</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" id="gas" className="w-5 h-5" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="gas"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.gas}
+                />
                 <span>Gas</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" id="electricity" className="w-5 h-5" />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="electricity"
+                  className="w-5 h-5"
+                  onChange={changesHandler}
+                  checked={formData.electricity}
+                />
                 <span>Electricity</span>
-              </label>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-6">
@@ -145,6 +275,8 @@ export default function AddProperty() {
                   id="bedrooms"
                   min="1"
                   required
+                  onChange={changesHandler}
+                  value={formData.bedrooms}
                 />
                 <div>
                   <p>Bedrooms</p>
@@ -157,6 +289,8 @@ export default function AddProperty() {
                   id="bathrooms"
                   min="1"
                   required
+                  onChange={changesHandler}
+                  value={formData.bathrooms}
                 />
                 <p>Bathrooms</p>
               </div>
@@ -166,6 +300,8 @@ export default function AddProperty() {
                   type="text"
                   id="price"
                   required
+                  onChange={changesHandler}
+                  value={formData.price}
                 />
                 <div className="flex flex-col items-center">
                   <p>Price</p>
@@ -224,9 +360,10 @@ export default function AddProperty() {
                   </button>
                 </div>
               ))}
-            <button className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-              Add Property
+            <button disabled={loadingState || uploading} className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+              {loadingState ? "Adding Property..." : "Add Property"}
             </button>
+            {error && <div className="text-red-700">{error}</div>}
           </div>
         </form>
       </main>

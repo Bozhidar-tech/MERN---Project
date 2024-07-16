@@ -29,19 +29,24 @@ const PropertySchema = mongoose.Schema({
         type: Boolean,
         required: true
     },
+    parking:{
+        type: Boolean,
+        required: true
+    },
     type:{
         type: String,
         required: true
     },
     images: {
         type : Array,
-        required: true},
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }, 
-}, {
-    timestamps: true,
-})
+        required: true
+    },
+    userRef: {
+        type: String,
+        required: true
+    },
+}, 
+{timestamps: true}
+)
 
 export default mongoose.model('Property', PropertySchema);
