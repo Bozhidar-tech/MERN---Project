@@ -136,7 +136,7 @@ export default function Profile() {
       setLoadingState(true);
       setDeletePropertyError(false);
 
-      const res = await fetch(`/api/properties/delete-property/${propertyId}`, {
+      const res = await fetch(`/api/property/delete/${propertyId}`, {
         method: "DELETE",
       });
 
@@ -160,7 +160,6 @@ export default function Profile() {
     try {
       setPropertiesError(false);
       const properties = await fetch(`/api/user/properties/${currentUser._id}`);
-      console.log(properties);
       const data = await properties.json();
       if (data.success === false) {
         setPropertiesError(true);

@@ -78,7 +78,6 @@ export default function AddProperty() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
         },
         (error) => {
           reject(error);
@@ -139,7 +138,7 @@ export default function AddProperty() {
         return setError("You must upload at least one image");
       setLoadingState(true);
       setError(false);
-      const data = await fetch("/api/properties/add-property", {
+      const data = await fetch("/api/property/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
