@@ -39,7 +39,7 @@ export default function AddProperty() {
       return;
     }
 
-    if (files.length > 0 && files.length + formData.imageUrls.length < 11) {
+    if (files.length > 0 && files.length + formData.images.length < 11) {
       setUploading(true);
       setImageUploadError(false);
       const uploadedImages = [];
@@ -52,7 +52,7 @@ export default function AddProperty() {
         .then((urls) => {
           setFormData({
             ...formData,
-            imageUrls: formData.imageUrls.concat(urls),
+            images: formData.images.concat(urls),
           });
           setImageUploadError(false);
           setUploading(false);
@@ -94,7 +94,7 @@ export default function AddProperty() {
   const imageDeleteHandler = (index) => {
     setFormData({
       ...formData,
-      imageUrls: formData.imageUrls.filter((_, i) => i !== index),
+      images: formData.images.filter((_, i) => i !== index),
     });
   };
 
@@ -134,7 +134,7 @@ export default function AddProperty() {
     e.preventDefault();
 
     try {
-      if (formData.imageUrls.length < 1)
+      if (formData.images.length < 1)
         return setError("You must upload at least one image");
       setLoadingState(true);
       setError(false);
@@ -339,8 +339,8 @@ export default function AddProperty() {
             {imageUploadError && (
               <div className="text-red-700">{imageUploadError}</div>
             )}
-            {formData.imageUrls.length > 0 &&
-              formData.imageUrls.map((url, index) => (
+            {formData.images.length > 0 &&
+              formData.images.map((url, index) => (
                 <div
                   key={url}
                   className="flex justify-between p-3 border items-center"
