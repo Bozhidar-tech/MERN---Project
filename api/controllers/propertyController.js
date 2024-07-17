@@ -83,8 +83,8 @@ export const getProperties = async (req, res, next) => {
 
         let type = req.query.type;
         
-        if (type === undefined || type === 'house') {
-            type = 'house';
+        if (type === undefined || type === 'all') {
+            type = { $in: ['house', 'apartment'] };
         };
 
         let gas = req.query.gas;
@@ -99,7 +99,7 @@ export const getProperties = async (req, res, next) => {
             electricity = { $in: [false, true]};
         };
 
-        const searchTerm = req.query.searchTerm || "";
+        const searchTerm = req.query.searchTerm || '';
 
         const sort = req.query.sort || 'createdAt';
 
@@ -112,14 +112,11 @@ export const getProperties = async (req, res, next) => {
             parking,
             gas,
             electricity,
-            location: {$regex: searchTerm, $options: 'i'}
         }).sort(
             { [sort]: order }
         ).limit(limit).skip(startIndex);
 
-        res.status(200).json(properties);
-
-        
+        return res.status(200).json(properties);
     } catch (error) {
         next(error);
     }

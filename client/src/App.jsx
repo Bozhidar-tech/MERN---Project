@@ -12,6 +12,7 @@ import EditProperty from './pages/EditProperty/EditProperty';
 import Property from './pages/Property/Property';
 import Search from './pages/Search/Search';
 
+
 export default function App() {
   return (
     <BrowserRouter>

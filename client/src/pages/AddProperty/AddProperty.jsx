@@ -185,7 +185,7 @@ export default function AddProperty() {
               placeholder="Description"
               className="border p-4 rounded-lg shadow-sm"
               id="description"
-              maxLength="100"
+              maxLength="10000"
               minLength="10"
               required
               onChange={changesHandler}
