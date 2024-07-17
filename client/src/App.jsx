@@ -9,6 +9,7 @@ import Header from './components/Header/Header';
 import RouteGuard from './components/RouteGuard/RouteGuard';
 import AddProperty from './pages/AddProperty/AddProperty';
 import EditProperty from './pages/EditProperty/EditProperty';
+import Property from './pages/Property/Property';
 
 export default function App() {
   return (
@@ -19,6 +20,8 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/property/:propertyId" element={<Property />} />
+        
         <Route element={<RouteGuard />} >
           <Route path="/profile" element={<Profile />} />
           <Route path="/add-property" element={<AddProperty />} />
