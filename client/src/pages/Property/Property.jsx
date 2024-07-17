@@ -123,18 +123,11 @@ export default function Property() {
                 {property.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
+                    {currentUser && property.userRef !== currentUser._id && !contact && (
+            <button onClick={()=> setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95">Contact Landlord</button>
+                    )}
+                    {contact && <Contact property={property}/>}
 
-            {currentUser &&
-              property.userRef !== currentUser._id &&
-              !contact && (
-                <button
-                  onClick={() => setContact(true)}
-                  className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
-                >
-                  Contact landlord
-                </button>
-              )}
-            {contact && <Contact property={property} />}
           </div>
         </div>
       )}
