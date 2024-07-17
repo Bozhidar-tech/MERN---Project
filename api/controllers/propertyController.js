@@ -63,3 +63,64 @@ export const getProperty = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getProperties = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.query.limit) || 9;
+        const startIndex = parseInt(req.query.startIndex) || 0;
+
+        let furnished = req.query.furnished;
+
+        if (furnished === undefined || furnished === 'false') {
+            furnished = { $in: [false, true]};
+        };
+
+        let parking = req.query.parking;
+        
+        if (parking === undefined || parking === 'false') {
+            parking = { $in: [false, true]};
+        };
+
+        let type = req.query.type;
+        
+        if (type === undefined || type === 'house') {
+            type = 'house';
+        };
+
+        let gas = req.query.gas;
+        
+        if (gas === undefined || gas === 'false') {
+            gas = { $in: [false, true]};
+        };
+
+        let electricity = req.query.electricity;
+        
+        if (electricity === undefined || electricity === 'false') {
+            electricity = { $in: [false, true]};
+        };
+
+        const searchTerm = req.query.searchTerm || "";
+
+        const sort = req.query.sort || 'createdAt';
+
+        const order = req.query.order || 'desc';
+
+        const properties = await Property.find({
+            title: {$regex: searchTerm, $options: 'i'},
+            type,
+            furnished,
+            parking,
+            gas,
+            electricity,
+            location: {$regex: searchTerm, $options: 'i'}
+        }).sort(
+            { [sort]: order }
+        ).limit(limit).skip(startIndex);
+
+        res.status(200).json(properties);
+
+        
+    } catch (error) {
+        next(error);
+    }
+};
