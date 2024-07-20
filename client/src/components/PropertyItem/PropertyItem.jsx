@@ -29,13 +29,13 @@ export default function PropertyItem({ property }) {
           <div className='text-slate-700 flex gap-4'>
             <div className='font-bold text-xs'>
               {property.bedrooms > 1
-                ? `${property.bedrooms} beds `
-                : `${property.bedrooms} bed `}
+                ? `${property.bedrooms} спални `
+                : `${property.bedrooms} спалня `}
             </div>
             <div className='font-bold text-xs'>
               {property.bathrooms > 1
-                ? `${property.bathrooms} baths `
-                : `${property.bathrooms} bath `}
+                ? `${property.bathrooms} бани `
+                : `${property.bathrooms} баня `}
             </div>
           </div>
         </div>

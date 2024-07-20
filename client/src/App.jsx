@@ -11,6 +11,7 @@ import AddProperty from './pages/AddProperty/AddProperty';
 import EditProperty from './pages/EditProperty/EditProperty';
 import Property from './pages/Property/Property';
 import Search from './pages/Search/Search';
+import Footer from './components/Footer/Footer';
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/edit-property/:propertyId" element={<EditProperty />} />
         </Route>
       </Routes>
+      <Footer/>
     </BrowserRouter>
   )
 }

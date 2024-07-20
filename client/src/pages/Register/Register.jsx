@@ -20,7 +20,7 @@ export default function Register() {
       e.preventDefault();
     
       if (!formData.username || !formData.email || !formData.password) {
-        setError('All fields are required.');
+        setError('Всички полета са задължителни.');
         return;
       }
     
@@ -40,40 +40,40 @@ export default function Register() {
     
         if (!res.ok) {
           setLoading(false);
-          setError(data.message || 'Registration failed. Please try again.');
+          setError(data.message || 'Регистрацията е неуспешна. Моля, опитайте отново.');
           return;
         }
     
         setLoading(false);
         setError(null);
-        alert('Registration successful!');
+        alert('Регистрацията е успешна!');
         navigate('/login');
       } catch (error) {
         setLoading(false);
-        setError('An unexpected error occurred. Please try again.');
+        setError('Неочаквана грешка. Моля, опитайте отново.');
       }
     };
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>
-        Register
+        Регистрация
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="text" placeholder='Username' 
+        <input type="text" placeholder='Име' 
         className='border p-3 rounded-lg' id='username' onChange={handleChange}/>
         <input type="email" placeholder='Email' 
         className='border p-3 rounded-lg' id='email' onChange={handleChange}/>
-        <input type="password" placeholder='Password' 
+        <input type="password" placeholder='Парола' 
         className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
         <button disabled={loading} className='text-white p-3 rounded-lg uppercase hover:opacity-95 
-        disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Loading...' : 'Register'}</button>
+        disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Зареждане...' : 'Регистрация'}</button>
         <OAuth/>
       </form>
       <div className='flex gap-2 mt-5'>
-        <p>Have an account? </p>
+        <p>Вече имате акаунт? </p>
         <Link to='/login'>
-        <span className='text-blue-500'>Sign In</span>
+        <span className='text-blue-500'>Вход</span>
         </Link>
       </div>
       {error && <p className='text-red-500'>{error}</p>}

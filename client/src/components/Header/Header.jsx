@@ -28,39 +28,48 @@ export default function Header() {
     <div>
       <header className='bg-slate-100 shadow-md'>
         <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
-            <Link to='/'>
+          <Link to='/'>
             <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-            <span className='ml-2' style={{ color: '#00B98E' }}>Bozhidar</span>
-                <span className='ml-2' style={{ color: '#00B98E' }}>Estate</span>
+              <span className='ml-2' style={{ color: '#00B98E' }}>Bozhidar</span>
+              <span className='ml-2' style={{ color: '#00B98E' }}>Estate</span>
             </h1>
+          </Link>
+          <form onSubmit={submitHandler} className='bg-slate-100 p-3 rounded-lg flex items-center'>
+            <input 
+              type="text" 
+              placeholder='Търси...' 
+              className='bg-transparent focus:outline-none w-24 sm:w-64'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button>
+              <FaSearch className='text-slate-600'/>
+            </button>
+          </form>
+          <ul className='flex gap-4'>
+            <Link to='/'>
+              <li className='hidden sm:inline text-slate-700 hover:underline'>Начало</li>
             </Link>
-            <form onSubmit={submitHandler} className='bg-slate-100 p-3 rounded-lg flex items-center'>
-                <input type="text" placeholder='Seach...' 
-                className='bg-transparent focus:outline-none w-24 sm:w-64'
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button>
-                <FaSearch className='text-slate-600'/>
-                </button>
-            </form>
-            <ul className='flex gap-4'>
-                <Link to='/'>
-                <li className='hidden sm:inline text-slate-700 hover:underline'>Home</li>
-                </Link>
-                <Link to='/about'>
-                <li className='hidden sm:inline text-slate-700 hover:underline'>About</li>
-                </Link>
-                <Link to='/profile'>
-                {currentUser ? (
-                    <img className='rounded-full h-7 w-7 object-cover' src={currentUser.image} alt="profile" />
-                ) : (
-                    <li className='hidden sm:inline text-slate-700 hover:underline'>Login</li>
-                )}
-                </Link>
-            </ul>
+            <Link to='/about'>
+              <li className='hidden sm:inline text-slate-700 hover:underline'>За нас</li>
+            </Link>
+            <Link to='/profile'>
+              {currentUser ? (
+                <img className='rounded-full h-7 w-7 object-cover' src={currentUser.image} alt="profile" />
+              ) : (
+                <li className='hidden sm:inline text-slate-700 hover:underline'>Вход</li>
+              )}
+            </Link>
+            {!currentUser && (
+              <Link to='/register'>
+                <li className='hidden sm:inline text-slate-700 hover:underline'>Регистрация</li>
+              </Link>
+            )}
+          </ul>
         </div>
       </header>
     </div>
   )
+  
+  
 }

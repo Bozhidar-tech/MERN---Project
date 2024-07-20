@@ -34,7 +34,7 @@ export default function AddProperty() {
 
   const imageSubmitHandler = (e) => {
     if (files.length === 0) {
-      setImageUploadError("You should upload at least 1 image");
+      setImageUploadError("Моля, изберете минимум 1 снимка.");
       setUploading(false);
       return;
     }
@@ -58,11 +58,11 @@ export default function AddProperty() {
           setUploading(false);
         })
         .catch((error) => {
-          setImageUploadError("Upload failed. (2MB limit exceeded)");
+          setImageUploadError("Качването неуспешно. (2MB limit exceeded)");
           setUploading(false);
         });
     } else {
-      setImageUploadError("You can only upload 10 images per listing");
+      setImageUploadError("Можете да качите до 10 снимки на имот.");
       setUploading(false);
     }
   };
@@ -135,7 +135,7 @@ export default function AddProperty() {
 
     try {
       if (formData.images.length < 1)
-        return setError("You must upload at least one image");
+        return setError("Моля, качете поне 1 снимка!");
       setLoadingState(true);
       setError(false);
       const data = await fetch("/api/property/add", {
@@ -161,7 +161,7 @@ export default function AddProperty() {
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <main className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
         <h1 className="text-4xl font-bold text-center my-8 text-gray-800">
-          Add a Property
+          Добавяне на имот
         </h1>
 
         <form
@@ -171,7 +171,7 @@ export default function AddProperty() {
           <div className="flex flex-col flex-1 gap-6">
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Заглавие"
               className="border p-4 rounded-lg shadow-sm"
               id="title"
               maxLength="50"
@@ -182,7 +182,7 @@ export default function AddProperty() {
             />
             <textarea
               type="text"
-              placeholder="Description"
+              placeholder="Описание"
               className="border p-4 rounded-lg shadow-sm"
               id="description"
               maxLength="10000"
@@ -193,10 +193,10 @@ export default function AddProperty() {
             />
             <input
               type="text"
-              placeholder="Location"
+              placeholder="Локация"
               className="border p-4 rounded-lg shadow-sm"
               id="location"
-              maxLength="30"
+              maxLength="300"
               minLength="10"
               required
               onChange={changesHandler}
@@ -212,7 +212,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.type === "house"}
                 />
-                <span>House</span>
+                <span>Къща</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -222,7 +222,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.type === "apartment"}
                 />
-                <span>Apartment</span>
+                <span>Апартамент</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -232,7 +232,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.furnished}
                 />
-                <span>Furnished</span>
+                <span>Обзавеждане</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -242,7 +242,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.parking}
                 />
-                <span>Parking Spot</span>
+                <span>Паркомясто</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -252,7 +252,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.gas}
                 />
-                <span>Gas</span>
+                <span>Газ</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -262,7 +262,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.electricity}
                 />
-                <span>Electricity</span>
+                <span>Електричество</span>
               </div>
             </div>
 
@@ -278,7 +278,7 @@ export default function AddProperty() {
                   value={formData.bedrooms}
                 />
                 <div>
-                  <p>Bedrooms</p>
+                  <p>Спални</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -291,7 +291,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   value={formData.bathrooms}
                 />
-                <p>Bathrooms</p>
+                <p>Бани</p>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -303,8 +303,8 @@ export default function AddProperty() {
                   value={formData.price}
                 />
                 <div className="flex flex-col items-center">
-                  <p>Price</p>
-                  <span className="text-xs">($)</span>
+                  <p>Цена</p>
+                  <span className="text-xs">( € )</span>
                 </div>
               </div>
             </div>
@@ -312,9 +312,9 @@ export default function AddProperty() {
 
           <div className="flex flex-col flex-1 gap-6">
             <p className="font-semibold">
-              Images:
+              Снимки:
               <span className="font-normal text-gray-500 ml-2">
-                The first image will be the cover (max 10)
+                Първата снимка е корица! (лимит на снимките: 10)
               </span>
             </p>
 
@@ -333,7 +333,7 @@ export default function AddProperty() {
                 onClick={imageSubmitHandler}
                 className="p-4 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
               >
-                {uploading ? "Uploading..." : "Upload"}
+                {uploading ? "Качване..." : "Качи снимки"}
               </button>
             </div>
             {imageUploadError && (
@@ -355,12 +355,12 @@ export default function AddProperty() {
                     onClick={() => imageDeleteHandler(index)}
                     className="p-3 text-red-700 rounded-lg uppercase hover:opacity-75"
                   >
-                    Delete
+                    Изтриване
                   </button>
                 </div>
               ))}
             <button disabled={loadingState || uploading} className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-              {loadingState ? "Adding Property..." : "Add Property"}
+              {loadingState ? "Добавяне..." : "Добави имота"}
             </button>
             {error && <div className="text-red-700">{error}</div>}
           </div>

@@ -21,7 +21,7 @@ export default function Home() {
         const houseRes = await fetch('/api/property/get?type=house&limit=4');
         if (!houseRes.ok) {
           setError(true);
-          setErrorMessage('Failed to fetch house properties');
+          setErrorMessage('Неуспешно зареждане на къщите.');
           return;
         }
         const houseData = await houseRes.json();
@@ -30,7 +30,7 @@ export default function Home() {
         const apartmentRes = await fetch('/api/property/get?type=apartment&limit=4');
         if (!apartmentRes.ok) {
           setError(true);
-          setErrorMessage('Failed to fetch apartment properties');
+          setErrorMessage('Неуспешно зареждане на апартаментите.');
           return;
         }
         const apartmentData = await apartmentRes.json();
@@ -39,7 +39,7 @@ export default function Home() {
         setLoading(false);
       } catch (error) {
         setError(true);
-        setErrorMessage('An unexpected error occurred');
+        setErrorMessage('Неочаквана грешка. Моля, опитайте отново');
         console.error('Error fetching properties:', error.message);
       }
     };
@@ -52,25 +52,25 @@ export default function Home() {
       
       <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
         <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
-          Find your future <span className='text-slate-500'>home</span>
+          Намерете бъдещият си  <span className='text-slate-500'>дом</span>
           <br />
-          easily with us
+          лесно чрез нашата агенция
         </h1>
         <div className='text-gray-400 text-xs sm:text-sm'>
-          Bozhidar Estate is the best place to find your next perfect place to live.
+          Bozhidar Estate е най-доборото място да намерите бъдещият си дом.
           <br />
-          We have a wide range of properties for you to choose from.
+          Имаме голям избор на имоти, от които да избирате.
         </div>
         <Link
           to={'/search'}
           className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'
         >
-          Let's get started...
+          Потърсете вашият дом тук...
         </Link>
       </div>
 
       <Swiper navigation>
-        {[...houseProperties, ...apartmentProperties].map((property) => (
+        {[...houseProperties].map((property) => (
           <SwiperSlide key={property._id}>
             <div
               style={{
@@ -84,12 +84,12 @@ export default function Home() {
       </Swiper>
 
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
-        {loading && <p>Loading...</p>}
+        {loading && <p>Зареждане...</p>}
         {houseProperties.length > 0 && (
           <div>
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Latest Houses</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=house'}>Show more houses</Link>
+              <h2 className='text-2xl font-semibold text-slate-600'>Последно добавени къщи</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=house'}>Покажи повече къщи</Link>
             </div>
             <div className='flex flex-wrap gap-4'>
               {houseProperties.map((property) => (
@@ -101,8 +101,8 @@ export default function Home() {
         {apartmentProperties.length > 0 && (
           <div>
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Latest Apartments</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=apartment'}>Show more apartments</Link>
+              <h2 className='text-2xl font-semibold text-slate-600'>Последно добавени апаратаменти</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=apartment'}>Покажи повече апаратаменти</Link>
             </div>
             <div className='flex flex-wrap gap-4'>
               {apartmentProperties.map((property) => (

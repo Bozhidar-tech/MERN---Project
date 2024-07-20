@@ -3,12 +3,16 @@ import React from 'react'
 export default function About() {
   return (
     <div className='py-20 px-4 max-w-6xl mx-auto'>
-      <h1 className='text-3xl font-bold mb-4 text-slate-800'>About Bozhidar Estate</h1>
-      <p className='mb-4 text-slate-700'>Bozhidar Estate is a leading real estate agency that specializes in helping clients buy, sell, and rent properties in the most desirable neighborhoods. Our team of experienced agents is dedicated to providing exceptional service and making the buying and selling process as smooth as possible.</p>
+      <h1 className='text-3xl font-bold mb-4 text-slate-800'>За Bozhidar Estate</h1>
       <p className='mb-4 text-slate-700'>
-      Our mission is to help our clients achieve their real estate goals by providing expert advice, personalized service, and a deep understanding of the local market. Whether you are looking to buy, sell, or rent a property, we are here to help you every step of the way.
+        Агенция "Bozhidar Estate" е водеща агенция за недвижими имоти, специализирана в помощта на клиенти при покупка и продажба на имоти в най-желаните квартали. Нашият екип от опитни агенти е отдаден на предоставянето на изключително обслужване и прави процеса на покупка и продажба възможно най-гладък.
       </p>
-      <p className='mb-4 text-slate-700'>Our team of agents has a wealth of experience and knowledge in the real estate industry, and we are committed to providing the highest level of service to our clients. We believe that buying or selling a property should be an exciting and rewarding experience, and we are dedicated to making that a reality for each and every one of our clients.</p>
+      <p className='mb-4 text-slate-700'>
+        Нашата мисия е да помогнем на клиентите си да постигнат своите цели в сферата на недвижимите имоти, като предоставяме експертни съвети, персонализирано обслужване и дълбоко разбиране на местния пазар. Независимо дали търсите да купите или продадете имот, ние сме тук да ви помогнем на всяка стъпка от пътя.
+      </p>
+      <p className='mb-4 text-slate-700'>
+        Нашият екип от агенти разполага с богат опит и знания в индустрията на недвижимите имоти, и сме ангажирани да предоставяме най-високото ниво на обслужване на нашите клиенти. Вярваме, че покупката или продажбата на имот трябва да бъде вълнуващо и възнаграждаващо преживяване, и сме посветени на това да го направим реалност за всеки един от нашите клиенти.
+      </p>
     </div>
-  )
+  );
 }

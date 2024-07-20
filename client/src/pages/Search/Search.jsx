@@ -150,7 +150,7 @@ export default function Search() {
             />
           </div>
           <div className="flex gap-2 flex-wrap items-center">
-            <label className="font-semibold">Type:</label>
+            <label className="font-semibold">Вид:</label>
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -159,7 +159,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "all"}
               />
-              <span>House & Apartment</span>
+              <span>Къщи & Апаратаменти</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -169,7 +169,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "house"}
               />
-              <span>House</span>
+              <span>Къщи</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -179,11 +179,11 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "apartment"}
               />
-              <span>Apartment</span>
+              <span>Апартаменти</span>
             </div>
           </div>
           <div className="flex gap-2 flex-wrap items-center">
-            <label className="font-semibold">Amenities:</label>
+            <label className="font-semibold">Удобства:</label>
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -192,7 +192,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.furnished}
               />
-              <span>Furnished</span>
+              <span>Обзавеждане</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -202,7 +202,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.gas}
               />
-              <span>Gas</span>
+              <span>Газ</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -212,7 +212,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.electricity}
               />
-              <span>Electricity</span>
+              <span>Електричество</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -222,29 +222,29 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.parking}
               />
-              <span>Parking</span>
+              <span>Паркомясто</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="font-semibold">Sort by:</label>
+            <label className="font-semibold">Сортиране по:</label>
             <select
               onChange={changesHandler}
               defaultValue={"created_at_desc"}
               className="border rounded-lg p-3"
               id="sort_order"
             >
-              <option value="regularPrice_desc">Price High to Low</option>
-              <option value="regularPrice_asc">Price Low to High</option>
-              <option value="createdAt_desc">Latest</option>
-              <option value="createdAt_asc">Oldest</option>
+              <option value="regularPrice_desc">Низходяща цена</option>
+              <option value="regularPrice_asc">Възходяща цена</option>
+              <option value="createdAt_desc">Най-нови</option>
+              <option value="createdAt_asc">Най-стари</option>
             </select>
           </div>
           <button
             className="text-white p-3 rounded-lg uppercase hover:opacity-95"
             style={{ background: "#00B98E" }}
           >
-            Search
+            Търси
           </button>
         </form>
       </div>
@@ -253,15 +253,15 @@ export default function Search() {
           className="text-3xl font-semibold border-b p-3 mt-5"
           style={{ color: "#00B98E" }}
         >
-          Properties List:
+          Списък с имотите:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
           {!loading && properties.length === 0 && (
-            <p className="text-xl text-slate-700">No properties found!</p>
+            <p className="text-xl text-slate-700">Няма намерени имоти!</p>
           )}
           {loading && (
             <p className="text-xl text-slate-700 text-center w-full">
-              Loading...
+              Зареждане...
             </p>
           )}
 
@@ -276,7 +276,7 @@ export default function Search() {
               onClick={onShowMoreClick}
               className="text-green-700 hover:underline p-7 text-center w-full"
             >
-              Show more
+              Покажи повече
             </button>
           )}
         </div>
