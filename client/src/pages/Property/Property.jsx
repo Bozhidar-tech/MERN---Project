@@ -94,8 +94,8 @@ export default function Property() {
             </p>
 
             <div className="flex gap-4">
-              <p className="bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                {property.type === "house" ? "House" : "Apartment"}
+              <p className="bg-green-700 w-full max-w-[200px] text-white text-center p-1 rounded-md">
+                {property.type === "house" ? "Къща" : "Апартамент"}
               </p>
             </div>
 
@@ -124,6 +124,14 @@ export default function Property() {
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaChair className="text-lg" />
                 {property.furnished ? "Обзаведен" : "Необзаведен"}
+              </li>
+              <li className="flex items-center gap-1 whitespace-nowrap ">
+                <FaChair className="text-lg" />
+                {property.electricity ? "ТЕЦ: ДА" : "ТЕЦ: НЕ"}
+              </li>
+              <li className="flex items-center gap-1 whitespace-nowrap ">
+                <FaChair className="text-lg" />
+                {property.gas ? "Газ: ДА" : "Газ: НЕ"}
               </li>
             </ul>
                     {currentUser && property.userRef !== currentUser._id && !contact && (
