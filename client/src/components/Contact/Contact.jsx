@@ -33,10 +33,10 @@ export default function Contact({ property }) {
       {landlord && (
         <div className="flex flex-col gap-2">
           <p>
-            Contact <span className="font-semibold">{landlord.username}</span>{" "}
-            for{" "}
+            Свържете се с <span className="font-semibold">{landlord.username}</span>{" "}
+            за{" "}
             <span className="font-semibold">
-              {property.title.toLowerCase()}
+              {property.title}
             </span>
           </p>
           <textarea
@@ -45,7 +45,7 @@ export default function Contact({ property }) {
             rows="2"
             value={message}
             onChange={onChange}
-            placeholder="Enter your message here..."
+            placeholder="Въведето вашето съобщение тук..."
             className="w-full border p-3 rounded-lg"
           ></textarea>
 
@@ -53,7 +53,7 @@ export default function Contact({ property }) {
             to={`mailto: ${landlord.email}?subject=Regarding${property.title}&body=${message}`}
             className="bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95"
           >
-            Send Message
+            Изпрати съобщението
           </Link>
         </div>
       )}
