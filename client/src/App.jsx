@@ -12,6 +12,7 @@ import EditProperty from './pages/EditProperty/EditProperty';
 import Property from './pages/Property/Property';
 import Search from './pages/Search/Search';
 import Footer from './components/Footer/Footer';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/property/:propertyId" element={<Property />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         
         <Route element={<RouteGuard />} >
           <Route path="/profile" element={<Profile />} />
