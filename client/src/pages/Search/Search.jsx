@@ -6,6 +6,7 @@ export default function Search() {
   const navigate = useNavigate();
   const [sidebardata, setSidebardata] = useState({
     searchTerm: "",
+    location: "",
     type: "all",
     parking: false,
     furnished: false,
@@ -19,41 +20,31 @@ export default function Search() {
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const typeFromUrl = urlParams.get("type");
-    const parkingFromUrl = urlParams.get("parking");
-    const furnishedFromUrl = urlParams.get("furnished");
-    const gasFromUrl = urlParams.get("gas");
-    const electricityFromUrl = urlParams.get("electricity");
-    const sortFromUrl = urlParams.get("sort");
-    const orderFromUrl = urlParams.get("order");
-
-    if (
-      searchTermFromUrl ||
-      typeFromUrl ||
-      parkingFromUrl ||
-      furnishedFromUrl ||
-      gasFromUrl ||
-      electricityFromUrl ||
-      sortFromUrl ||
-      orderFromUrl
-    ) {
-      setSidebardata({
-        searchTerm: searchTermFromUrl || "",
-        type: typeFromUrl || "all",
-        parking: parkingFromUrl === "true" ? true : false,
-        furnished: furnishedFromUrl === "true" ? true : false,
-        gas: gasFromUrl === "true" ? true : false,
-        electricity: electricityFromUrl === "true" ? true : false,
-        sort: sortFromUrl || "created_at",
-        order: orderFromUrl || "desc",
-      });
-    }
-
     const fetchProperties = async () => {
       setLoading(true);
       setShowMore(false);
+      const urlParams = new URLSearchParams();
+
+      if (sidebardata.location) {
+        urlParams.set("location", sidebardata.location);
+      }
+
+      if (sidebardata.searchTerm) {
+        urlParams.set("searchTerm", sidebardata.searchTerm);
+      }
+
+      if (sidebardata.type && sidebardata.type !== "all") {
+        urlParams.set("type", sidebardata.type);
+      }
+
+      urlParams.set("parking", sidebardata.parking);
+      urlParams.set("furnished", sidebardata.furnished);
+      urlParams.set("gas", sidebardata.gas);
+      urlParams.set("electricity", sidebardata.electricity);
+
+      urlParams.set("sort", sidebardata.sort);
+      urlParams.set("order", sidebardata.order);
+
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/property/get?${searchQuery}`);
       const data = await res.json();
@@ -67,14 +58,10 @@ export default function Search() {
     };
 
     fetchProperties();
-  }, [location.search]);
+  }, [sidebardata]);
 
   const changesHandler = (e) => {
-    if (
-      e.target.id === "all" ||
-      e.target.id === "house" ||
-      e.target.id === "apartment"
-    ) {
+    if (["all", "house", "apartment"].includes(e.target.id)) {
       setSidebardata({ ...sidebardata, type: e.target.id });
     }
 
@@ -82,36 +69,44 @@ export default function Search() {
       setSidebardata({ ...sidebardata, searchTerm: e.target.value });
     }
 
-    if (
-      e.target.id === "parking" ||
-      e.target.id === "electricity" ||
-      e.target.id === "gas" ||
-      e.target.id === "furnished"
-    ) {
+    if (e.target.id === "location") {
+      setSidebardata({ ...sidebardata, location: e.target.value });
+    }
+
+    if (["parking", "electricity", "gas", "furnished"].includes(e.target.id)) {
       setSidebardata({
         ...sidebardata,
-        [e.target.id]:
-          e.target.checked || e.target.checked === "true" ? true : false,
+        [e.target.id]: e.target.checked,
       });
     }
 
     if (e.target.id === "sort_order") {
-      const sort = e.target.value.split("_")[0] || "created_at";
-      const order = e.target.value.split("_")[1] || "desc";
-
-      setSidebardata({ ...sidebardata, sort, order });
+      const [sort, order] = e.target.value.split("_");
+      setSidebardata({ ...sidebardata, sort: sort || "created_at", order: order || "desc" });
     }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    urlParams.set("searchTerm", sidebardata.searchTerm);
-    urlParams.set("type", sidebardata.type);
+
+    if (sidebardata.searchTerm) {
+      urlParams.set("searchTerm", sidebardata.searchTerm);
+    }
+
+    if (sidebardata.location) {
+      urlParams.set("location", sidebardata.location);
+    }
+
+    if (sidebardata.type && sidebardata.type !== "all") {
+      urlParams.set("type", sidebardata.type);
+    }
+
     urlParams.set("parking", sidebardata.parking);
     urlParams.set("furnished", sidebardata.furnished);
     urlParams.set("gas", sidebardata.gas);
     urlParams.set("electricity", sidebardata.electricity);
+
     urlParams.set("sort", sidebardata.sort);
     urlParams.set("order", sidebardata.order);
     const searchQuery = urlParams.toString();
@@ -122,6 +117,26 @@ export default function Search() {
     const numberOfProperties = properties.length;
     const startIndex = numberOfProperties;
     const urlParams = new URLSearchParams(location.search);
+
+    if (sidebardata.searchTerm) {
+      urlParams.set("searchTerm", sidebardata.searchTerm);
+    }
+
+    if (sidebardata.location) {
+      urlParams.set("location", sidebardata.location);
+    }
+
+    if (sidebardata.type && sidebardata.type !== "all") {
+      urlParams.set("type", sidebardata.type);
+    }
+
+    urlParams.set("parking", sidebardata.parking);
+    urlParams.set("furnished", sidebardata.furnished);
+    urlParams.set("gas", sidebardata.gas);
+    urlParams.set("electricity", sidebardata.electricity);
+
+    urlParams.set("sort", sidebardata.sort);
+    urlParams.set("order", sidebardata.order);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const res = await fetch(`/api/property/get?${searchQuery}`);
@@ -138,14 +153,27 @@ export default function Search() {
         <form onSubmit={submitHandler} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
             <label className="whitespace-nowrap font-semibold">
-              Search Term
+              Критерии
             </label>
             <input
               type="text"
               id="searchTerm"
-              placeholder="Search..."
+              placeholder="Търси..."
               className="border rounded-lg p-3 w-full"
               value={sidebardata.searchTerm}
+              onChange={changesHandler}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="whitespace-nowrap font-semibold">
+              Град / Село
+            </label>
+            <input
+              type="text"
+              id="location"
+              placeholder="Местоположение..."
+              className="border rounded-lg p-3 w-full"
+              value={sidebardata.location}
               onChange={changesHandler}
             />
           </div>

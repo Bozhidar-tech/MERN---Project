@@ -66,58 +66,58 @@ export const getProperty = async (req, res, next) => {
 
 export const getProperties = async (req, res, next) => {
     try {
-        const limit = parseInt(req.query.limit) || 9;
-        const startIndex = parseInt(req.query.startIndex) || 0;
-
-        let furnished = req.query.furnished;
-
-        if (furnished === undefined || furnished === 'false') {
-            furnished = { $in: [false, true]};
-        };
-
-        let parking = req.query.parking;
-        
-        if (parking === undefined || parking === 'false') {
-            parking = { $in: [false, true]};
-        };
-
-        let type = req.query.type;
-        
-        if (type === undefined || type === 'all') {
-            type = { $in: ['house', 'apartment'] };
-        };
-
-        let gas = req.query.gas;
-        
-        if (gas === undefined || gas === 'false') {
-            gas = { $in: [false, true]};
-        };
-
-        let electricity = req.query.electricity;
-        
-        if (electricity === undefined || electricity === 'false') {
-            electricity = { $in: [false, true]};
-        };
-
-        const searchTerm = req.query.searchTerm || '';
-
-        const sort = req.query.sort || 'createdAt';
-
-        const order = req.query.order || 'desc';
-
-        const properties = await Property.find({
-            title: {$regex: searchTerm, $options: 'i'},
-            type,
-            furnished,
-            parking,
-            gas,
-            electricity,
-        }).sort(
-            { [sort]: order }
-        ).limit(limit).skip(startIndex);
-
-        return res.status(200).json(properties);
+      const limit = parseInt(req.query.limit) || 9;
+      const startIndex = parseInt(req.query.startIndex) || 0;
+  
+      let furnished = req.query.furnished;
+      let parking = req.query.parking;
+      let type = req.query.type;
+      let gas = req.query.gas;
+      let electricity = req.query.electricity;
+  
+      if (furnished === undefined || furnished === 'false') {
+        furnished = { $in: [false, true]};
+      }
+  
+      if (parking === undefined || parking === 'false') {
+        parking = { $in: [false, true]};
+      }
+  
+      if (type === undefined || type === 'all') {
+        type = { $in: ['house', 'apartment'] };
+      }
+  
+      if (gas === undefined || gas === 'false') {
+        gas = { $in: [false, true]};
+      }
+  
+      if (electricity === undefined || electricity === 'false') {
+        electricity = { $in: [false, true]};
+      }
+  
+      const searchTerm = req.query.searchTerm || '';
+      const location = req.query.location || '';
+  
+      const sort = req.query.sort || 'createdAt';
+      const order = req.query.order || 'desc';
+  
+      const properties = await Property.find({
+        $and: [
+          searchTerm ? { title: { $regex: searchTerm, $options: 'i' } } : {},
+          location ? { location: { $regex: location, $options: 'i' } } : {},
+          type ? { type } : {},
+          furnished !== undefined ? { furnished } : {},
+          parking !== undefined ? { parking } : {},
+          gas !== undefined ? { gas } : {},
+          electricity !== undefined ? { electricity } : {}
+        ]
+      })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+  
+      return res.status(200).json(properties);
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
