@@ -30,7 +30,7 @@ export default function ForgotPassword() {
           setLoading(false);
           setError(null);
           alert('Съобщението е изпратено успешно!');
-          navigate('/login');
+          navigate('/');
         } catch (err) {
             setLoading(false);
             setError('Неочаквана грешка. Моля, опитайте отново.');
@@ -48,12 +48,6 @@ export default function ForgotPassword() {
         <button disabled={loading} className='text-white p-3 rounded-lg uppercase hover:opacity-95 
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Зареждане...' : 'Изпрати email'}</button>
       </form>
-      <div className='flex gap-2 mt-5'>
-        <p>Вече имате акаунт? </p>
-        <Link to='/login'>
-        <span className='text-blue-500'>Вход</span>
-        </Link>
-      </div>
       {error && <p className='text-red-500'>{error}</p>}
     </div>
   )
