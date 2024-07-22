@@ -83,7 +83,7 @@ export default function Profile() {
         const data = await updateInfo.json();
         if (data.success === false) {
           dispatch(
-            updateFailure(data.message || "Update failed. Please try again.")
+            updateFailure(data.message || "Промяната на данни е неуспешно.")
           );
           setLoadingState(false);
           return;
@@ -98,6 +98,10 @@ export default function Profile() {
   };
 
   const deleteHandler = async () => {
+    if (!window.confirm("Сигурни ли сте, че искате да изтриете регистрацията си ?")) {
+      return;
+    }
+
     try {
       dispatch(deleteStart());
       const deleteUser = await fetch(`/api/user/delete/${currentUser._id}`, {
@@ -106,7 +110,7 @@ export default function Profile() {
       const data = await deleteUser.json();
       if (data.success === false) {
         dispatch(
-          deleteFailure(data.message || "Delete failed. Please try again.")
+          deleteFailure(data.message || "Изтриването неуспешно. Моля, опитайте пак.")
         );
       }
       dispatch(deleteSuccess(data));
@@ -122,7 +126,7 @@ export default function Profile() {
       const data = await logoutUser.json();
       if (data.success === false) {
         dispatch(
-          logoutFailure(data.message || "Logout failed. Please try again.")
+          logoutFailure(data.message || "Излизането неуспешно. Моля, опитайте пак.")
         );
         return;
       }
@@ -133,6 +137,10 @@ export default function Profile() {
   };
 
   const deletePropertyHandler = async (propertyId) => {
+    if (!window.confirm("Сигурни ли сте, че искате да изтриете тази обява?")) {
+      return;
+    }
+
     try {
       setLoadingState(true);
       setDeletePropertyError(false);
@@ -146,14 +154,14 @@ export default function Profile() {
       setLoadingState(false);
 
       if (data.success === false) {
-        setDeletePropertyError(data.message || "Failed to delete property. Please try again.");
+        setDeletePropertyError(data.message || "Неуспешно изтриване на обява. Моля, опитайте отново.");
         return;
       }
       setMyProperties((prev) => prev.filter((property) => property._id !== propertyId));
-      alert('Property deleted successfully');
+      alert('Обявата е изтрита успешно.');
     } catch (error) {
       setLoadingState(false);
-      setDeletePropertyError(error.message || "An unexpected error occurred. Please try again later.");
+      setDeletePropertyError(error.message || "Неочаквана грешка. Моля, опитайте отново");
     }
   };
 
@@ -308,10 +316,10 @@ export default function Profile() {
                       onClick={() => deletePropertyHandler(property._id)}
                       className='text-red-500 uppercase'
                     >
-                      Изтриване на имота
+                      Изтриване на обявата
                     </button>
                     <Link to={`/edit-property/${property._id}`}>
-                      <button className='text-teal-400 uppercase'>Промяна на данните</button>
+                      <button className='text-teal-400 uppercase'>Редактиране на обявата</button>
                     </Link>
                   </div>
                 </div>

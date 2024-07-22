@@ -56,7 +56,7 @@ export default function Register() {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>
+      <h1 className='text-white text-3xl text-center font-semibold my-7'>
         Регистрация
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
@@ -71,7 +71,7 @@ export default function Register() {
         <OAuth/>
       </form>
       <div className='flex gap-2 mt-5 text-white'>
-        <p>Вече имате акаунт? </p>
+        <p>Вече имате регистрация? </p>
         <Link to='/login'>
         <span className='text-blue-500'>Вход</span>
         </Link>
