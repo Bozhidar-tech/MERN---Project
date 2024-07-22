@@ -99,7 +99,7 @@ export default function ContactPage() {
     </div>
   </form>
   {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-  {success && <p className="text-green-500 text-center mt-4">{success}</p>}
+  {success && <p className="text-white text-center mt-4" >{success}</p>}
 </section>
 
       <section className="mb-12 text-center">
