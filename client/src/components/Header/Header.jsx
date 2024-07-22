@@ -1,5 +1,5 @@
 import { FaSearch, FaBars } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +8,7 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Get current location
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -52,7 +53,9 @@ export default function Header() {
           </button>
         </div>
         <nav className="hidden sm:flex space-x-4">
-          <Link to="/" className="hover:text-teal-400">Начало</Link>
+          {location.pathname !== '/' && (
+            <Link to="/" className="hover:text-teal-400">Начало</Link>
+          )}
           <Link to="/about" className="hover:text-teal-400">За Нас</Link>
           <Link to="/contact" className="hover:text-teal-400">Контакт</Link>
           <Link to="/profile">
@@ -71,7 +74,9 @@ export default function Header() {
       </div>
       {isMenuOpen && (
         <div className="sm:hidden bg-gray-700 p-4">
-          <Link to="/" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>Начало</Link>
+          {location.pathname !== '/' && (
+            <Link to="/" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>Начало</Link>
+          )}
           <Link to="/about" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>За Нас</Link>
           <Link to="/profile">
             {currentUser ? (
@@ -89,5 +94,4 @@ export default function Header() {
       )}
     </header>
   );
-  
 }
