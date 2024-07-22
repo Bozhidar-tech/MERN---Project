@@ -83,14 +83,14 @@ export const sendContactForm = async (req, res, next) => {
     const mailTransporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "bozhidar.nunev@gmail.com",
-        pass: "dxfdqggyvsbaeybu",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
       },
     });
 
     let mailDetails = {
       from: email,
-      to: process.env.EMAIL_USER,
+      to: "bozhidar.nunev@abv.bg",
       subject: `Contact Form Submission from ${username}`,
       html: `
       <!DOCTYPE html>
