@@ -31,7 +31,7 @@ export default function Contact({ property }) {
   return (
     <>
       {landlord && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-white">
           <p>
             Свържете се с <span className="font-semibold">{landlord.username}</span>{" "}
             за{" "}
