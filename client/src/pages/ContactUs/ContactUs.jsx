@@ -47,87 +47,85 @@ export default function ContactPage() {
 
   return (
     <div className="py-20 px-4 max-w-7xl mx-auto">
-      <section className="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
-        <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">Контактна форма</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="username" className="block text-lg font-semibold text-slate-700 mb-2">Име</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-lg font-semibold text-slate-700 mb-2">Имейл</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-lg font-semibold text-slate-700 mb-2">Съобщение</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="6"
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              required
-            ></textarea>
-          </div>
-          <div className="text-center">
-            <button
-              type="submit"
-              className="bg-teal-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-teal-600"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Изпращане...' : 'Изпрати'}
-            </button>
-          </div>
-        </form>
-        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-        {success && <p className="text-green-500 text-center mt-4">{success}</p>}
-      </section>
+    <section className="bg-gray-400 p-8 rounded-lg shadow-lg mb-12 border border-gray-200">
+  <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">Контактна форма</h2>
+  <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label htmlFor="username" className="block text-lg font-semibold text-gray-700 mb-2">Име</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="email" className="block text-lg font-semibold text-gray-700 mb-2">Имейл</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+          required
+        />
+      </div>
+    </div>
+    <div>
+      <label htmlFor="message" className="block text-lg font-semibold text-gray-700 mb-2">Съобщение</label>
+      <textarea
+        id="message"
+        name="message"
+        rows="6"
+        value={formData.message}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+        required
+      ></textarea>
+    </div>
+    <div className="text-center">
+      <button
+        type="submit"
+        className="bg-teal-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? 'Изпращане...' : 'Изпрати'}
+      </button>
+    </div>
+  </form>
+  {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+  {success && <p className="text-green-500 text-center mt-4">{success}</p>}
+</section>
 
-      {/* Contact Info Section */}
       <section className="mb-12 text-center">
         <h2 className="text-3xl font-bold mb-6 text-white">Информация за Контакт</h2>
         <div className="flex flex-col md:flex-row md:justify-center gap-8">
-          <div className="bg-gray-100 p-6 rounded-lg shadow-md flex items-center text-left">
+          <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaMapMarkerAlt className="text-teal-500 text-2xl mr-4" />
             <div>
               <p className="text-slate-700">Sofia, Bulgaria</p>
             </div>
           </div>
-          <div className="bg-gray-100 p-6 rounded-lg shadow-md flex items-center text-left">
+          <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaPhone className="text-teal-500 text-2xl mr-4" />
             <div>
               <p className="text-slate-700">+012 345 67890</p>
             </div>
           </div>
-          <div className="bg-gray-100 p-6 rounded-lg shadow-md flex items-center text-left">
+          <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaEnvelope className="text-teal-500 text-2xl mr-4" />
             <div>
-              <p className="text-slate-700">mailsender@abv.bg</p>
+              <p className="text-slate-700">bozhidar.nunev@abv.bg</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Map Section */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">Нашето Местоположение</h2>
         <div className="relative h-[400px] rounded-lg overflow-hidden">

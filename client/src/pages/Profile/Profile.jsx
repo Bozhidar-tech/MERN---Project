@@ -35,8 +35,6 @@ export default function Profile() {
   const dispatch = useDispatch();
   const [propertiesVisible, setPropertiesVisible] = useState(false);
 
-  
-
   useEffect(() => {
     if (file) {
       imageUploadHandler(file);
@@ -119,7 +117,7 @@ export default function Profile() {
 
   const logoutHandler = async () => {
     try {
-      dispatch(logoutStart);
+      dispatch(logoutStart());
       const logoutUser = await fetch("/api/auth/logout");
       const data = await logoutUser.json();
       if (data.success === false) {
@@ -177,16 +175,13 @@ export default function Profile() {
 
   const togglePropertiesVisibility = () => {
     setPropertiesVisible(!propertiesVisible);
-    // Call showMyProperties only when properties are being shown
     if (!propertiesVisible) {
       showMyProperties();
     }
   };
 
-
-
   return (
-    <div className="p-3 max-w-lg mx-auto">
+    <div className="p-6 max-w-3xl mx-auto bg-gray-800 text-white rounded-lg shadow-md">
       <h1 className="text-3xl font-semibold text-center my-7">Моят профил</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-4">
         <input
@@ -200,17 +195,17 @@ export default function Profile() {
           onClick={() => fileInput.current.click()}
           src={formData.image || currentUser.image}
           alt="avatar"
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
+          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2 border-2 border-teal-400"
         />
         <p className="text-sm self-center">
           {uploadError ? (
-            <span className="text-red-700">
-              Грешка при качването на снимка.(Размерът трябва да е под 2MB)
+            <span className="text-red-500">
+              Неуспешно качване на снимка. (Размерът трябва да е под 2MB)
             </span>
           ) : filePercentage > 0 && filePercentage < 100 ? (
-            <span className="text-slate-700">{`Uploading ${filePercentage}%`}</span>
+            <span className="text-slate-300">{`Uploading ${filePercentage}%`}</span>
           ) : filePercentage === 100 ? (
-            <span className="text-green-700">Снимката е качена успешно!</span>
+            <span className="text-green-400">Снимката е качена успешно!</span>
           ) : (
             ""
           )}
@@ -220,7 +215,7 @@ export default function Profile() {
           placeholder="Име"
           defaultValue={currentUser.username}
           id="username"
-          className="border p-3 rounded-lg"
+          className="border border-gray-600 p-3 rounded-lg bg-gray-900 text-white"
           onChange={changesHandler}
         />
         <input
@@ -228,25 +223,24 @@ export default function Profile() {
           placeholder="Email"
           defaultValue={currentUser.email}
           id="email"
-          className="border p-3 rounded-lg"
+          className="border border-gray-600 p-3 rounded-lg bg-gray-900 text-white"
           onChange={changesHandler}
         />
         <input
           type="password"
           placeholder="Парола"
           id="password"
-          className="border p-3 rounded-lg"
+          className="border border-gray-600 p-3 rounded-lg bg-gray-900 text-white"
           onChange={changesHandler}
         />
         <button
           disabled={loading || loadingState}
-          className="text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-          style={{ backgroundColor: "#00B98E" }}
+          className="text-white p-3 rounded-lg uppercase bg-teal-400 hover:bg-teal-300 disabled:bg-teal-600"
         >
           {loadingState ? "Зареждане..." : "Промени данните"}
         </button>
         <Link
-          className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
+          className="bg-teal-400 text-white p-3 rounded-lg uppercase text-center hover:bg-teal-300"
           to={"/add-property"}
         >
           Добави обява
@@ -255,33 +249,32 @@ export default function Profile() {
       <div className="flex justify-between mt-5 space-x-4">
         <span
           onClick={deleteHandler}
-          className="text-red-700 cursor-pointer hover:text-red-800 font-semibold py-2 px-4 border border-red-700 rounded-lg hover:bg-red-100 transition duration-300"
+          className="text-red-500 cursor-pointer hover:text-red-400 font-semibold py-2 px-4 border border-red-500 rounded-lg hover:bg-red-700 transition duration-300"
         >
           Изтриване на акаунта
         </span>
         <span
           onClick={logoutHandler}
-          className="text-blue-700 cursor-pointer hover:text-blue-800 font-semibold py-2 px-4 border border-blue-700 rounded-lg hover:bg-blue-100 transition duration-300"
+          className="text-teal-400 cursor-pointer hover:text-teal-300 font-semibold py-2 px-4 border border-teal-400 rounded-lg hover:bg-teal-700 transition duration-300"
         >
           Изход
         </span>
       </div>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
       {successfulUpdate && (
-        <p className="text-green-700">Информацията е променена успешно</p>
+        <p className="text-green-400 mt-4">Информацията е променена успешно</p>
       )}
       <button
         onClick={togglePropertiesVisibility}
-        className="text-white font-bold my-3 py-2 px-4 rounded-lg w-full hover:bg-green-700 transition duration-300"
-        style={{ backgroundColor: "#00B98E" }}
+        className="text-white font-bold my-3 py-2 px-4 rounded-lg w-full bg-teal-400 hover:bg-teal-300 transition duration-300"
       >
         {propertiesVisible ? 'Скрий обявите' : 'Преглед на обявите'}
       </button>
       {propertiesVisible && (
         <>
           {propertiesError && (
-            <p className="text-red-500">
+            <p className="text-red-500 mt-4">
               Неуспешно зареждане на обявите. Моля, опитайте отново.
             </p>
           )}
@@ -294,7 +287,7 @@ export default function Profile() {
               {myProperties.map((property) => (
                 <div
                   key={property._id}
-                  className='border rounded-lg p-3 flex justify-between items-center gap-4'
+                  className='border border-gray-600 rounded-lg p-3 flex justify-between items-center gap-4 bg-gray-900'
                 >
                   <Link to={`/property/${property._id}`}>
                     <img
@@ -304,7 +297,7 @@ export default function Profile() {
                     />
                   </Link>
                   <Link
-                    className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                    className='text-slate-300 font-semibold hover:underline truncate flex-1'
                     to={`/property/${property._id}`}
                   >
                     <p>{property.title}</p>
@@ -313,19 +306,19 @@ export default function Profile() {
                   <div className='flex flex-col item-center'>
                     <button
                       onClick={() => deletePropertyHandler(property._id)}
-                      className='text-red-700 uppercase'
+                      className='text-red-500 uppercase'
                     >
                       Изтриване на имота
                     </button>
                     <Link to={`/edit-property/${property._id}`}>
-                      <button className='text-green-700 uppercase'>Промяна на данните</button>
+                      <button className='text-teal-400 uppercase'>Промяна на данните</button>
                     </Link>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-red-500">Няма намерени обяви.</p>
+            <p className="text-red-500 mt-4">Няма намерени обяви.</p>
           )}
         </>
       )}

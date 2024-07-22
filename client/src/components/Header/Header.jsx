@@ -54,6 +54,7 @@ export default function Header() {
         <nav className='hidden sm:flex space-x-4'>
           <Link to='/' className='hover:text-teal-400'>Начало</Link>
           <Link to='/about' className='hover:text-teal-400'>За Нас</Link>
+          <Link to='/contact' className='hover:text-teal-400'>Контакт</Link>
           <Link to='/profile'>
             {currentUser ? (
               <img className='rounded-full h-7 w-7 object-cover' src={currentUser.image} alt="profile" />

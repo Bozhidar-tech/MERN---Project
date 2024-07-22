@@ -158,21 +158,18 @@ export default function AddProperty() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center">
-      <main className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
-        <h1 className="text-4xl font-bold text-center my-8 text-gray-800">
+    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
+      <main className="p-6 max-w-4xl mx-auto bg-gray-700 rounded-lg shadow-md">
+        <h1 className="text-4xl font-bold text-center my-8 text-teal-400">
           Добавяне на имот
         </h1>
-
-        <form
-          onSubmit={submitHandler}
-          className="flex flex-col sm:flex-row gap-6"
-        >
+  
+        <form onSubmit={submitHandler} className="flex flex-col sm:flex-row gap-6">
           <div className="flex flex-col flex-1 gap-6">
             <input
               type="text"
               placeholder="Заглавие"
-              className="border p-4 rounded-lg shadow-sm"
+              className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="title"
               maxLength="50"
               minLength="10"
@@ -181,9 +178,8 @@ export default function AddProperty() {
               value={formData.title}
             />
             <textarea
-              type="text"
               placeholder="Описание"
-              className="border p-4 rounded-lg shadow-sm"
+              className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="description"
               maxLength="10000"
               minLength="10"
@@ -194,7 +190,7 @@ export default function AddProperty() {
             <input
               type="text"
               placeholder="Локация"
-              className="border p-4 rounded-lg shadow-sm"
+              className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="location"
               maxLength="300"
               minLength="10"
@@ -202,74 +198,74 @@ export default function AddProperty() {
               onChange={changesHandler}
               value={formData.location}
             />
-
-            <div className="flex gap-6 flex-wrap">
+  
+            <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="house"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.type === "house"}
                 />
-                <span>Къща</span>
+                <span className="text-white">Къща</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="apartment"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.type === "apartment"}
                 />
-                <span>Апартамент</span>
+                <span className="text-white">Апартамент</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="furnished"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.furnished}
                 />
-                <span>Обзавеждане</span>
+                <span className="text-white">Обзавеждане</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="parking"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.parking}
                 />
-                <span>Паркомясто</span>
+                <span className="text-white">Паркомясто</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="gas"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.gas}
                 />
-                <span>Газ</span>
+                <span className="text-white">Газ</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="electricity"
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
                   checked={formData.electricity}
                 />
-                <span>Електричество</span>
+                <span className="text-white">Електричество</span>
               </div>
             </div>
-
+  
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <input
-                  className="p-4 border border-gray-300 rounded-lg shadow-sm"
+                  className="p-4 border border-gray-600 rounded-md shadow-sm bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   type="number"
                   id="bedrooms"
                   min="1"
@@ -278,12 +274,12 @@ export default function AddProperty() {
                   value={formData.bedrooms}
                 />
                 <div>
-                  <p>Спални</p>
+                  <p className="text-white">Спални</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <input
-                  className="p-4 border border-gray-300 rounded-lg shadow-sm"
+                  className="p-4 border border-gray-600 rounded-md shadow-sm bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   type="number"
                   id="bathrooms"
                   min="1"
@@ -291,11 +287,11 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   value={formData.bathrooms}
                 />
-                <p>Бани</p>
+                <p className="text-white">Бани</p>
               </div>
               <div className="flex items-center gap-2">
                 <input
-                  className="p-4 border border-gray-300 rounded-lg shadow-sm"
+                  className="p-4 border border-gray-600 rounded-md shadow-sm bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   type="text"
                   id="price"
                   required
@@ -303,25 +299,25 @@ export default function AddProperty() {
                   value={formData.price}
                 />
                 <div className="flex flex-col items-center">
-                  <p>Цена</p>
-                  <span className="text-xs">( € )</span>
+                  <p className="text-white">Цена</p>
+                  <span className="text-xs text-white">( € )</span>
                 </div>
               </div>
             </div>
           </div>
-
+  
           <div className="flex flex-col flex-1 gap-6">
-            <p className="font-semibold">
+            <p className="font-semibold text-white">
               Снимки:
-              <span className="font-normal text-gray-500 ml-2">
+              <span className="font-normal text-gray-400 ml-2">
                 Първата снимка е корица! (лимит на снимките: 10)
               </span>
             </p>
-
+  
             <div className="flex gap-4">
               <input
                 onChange={(e) => setFiles(e.target.files)}
-                className="p-4 border border-gray-300 rounded w-full shadow-sm"
+                className="p-4 border border-gray-600 rounded-md w-full shadow-sm bg-gray-800 text-white"
                 type="file"
                 id="images"
                 accept="image/*"
@@ -331,41 +327,45 @@ export default function AddProperty() {
                 type="button"
                 disabled={uploading}
                 onClick={imageSubmitHandler}
-                className="p-4 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+                className="p-4 bg-teal-500 text-white rounded-md uppercase hover:bg-teal-600 disabled:opacity-80"
               >
                 {uploading ? "Качване..." : "Качи снимки"}
               </button>
             </div>
             {imageUploadError && (
-              <div className="text-red-700">{imageUploadError}</div>
+              <div className="text-red-500">{imageUploadError}</div>
             )}
             {formData.images.length > 0 &&
               formData.images.map((url, index) => (
                 <div
                   key={url}
-                  className="flex justify-between p-3 border items-center"
+                  className="flex justify-between p-3 border border-gray-600 items-center bg-gray-800 rounded-md"
                 >
                   <img
                     src={url}
                     alt="property image"
-                    className="w-20 h-20 object-contain rounded-lg"
+                    className="w-20 h-20 object-contain rounded-md"
                   />
                   <button
                     type="button"
                     onClick={() => imageDeleteHandler(index)}
-                    className="p-3 text-red-700 rounded-lg uppercase hover:opacity-75"
+                    className="p-3 text-red-500 rounded-md uppercase hover:opacity-75"
                   >
                     Изтриване
                   </button>
                 </div>
               ))}
-            <button disabled={loadingState || uploading} className="p-4 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+            <button
+              disabled={loadingState || uploading}
+              className="p-4 bg-slate-700 text-white rounded-md uppercase hover:bg-slate-800 disabled:opacity-80"
+            >
               {loadingState ? "Добавяне..." : "Добави имота"}
             </button>
-            {error && <div className="text-red-700">{error}</div>}
+            {error && <div className="text-red-500">{error}</div>}
           </div>
         </form>
       </main>
     </div>
   );
+  
 }

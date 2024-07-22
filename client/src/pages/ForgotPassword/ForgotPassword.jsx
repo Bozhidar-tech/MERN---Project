@@ -39,7 +39,7 @@ export default function ForgotPassword() {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>
+      <h1 className='text-white text-3xl text-center font-semibold my-7'>
         Забравена парола
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
