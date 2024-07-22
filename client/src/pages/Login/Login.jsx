@@ -57,8 +57,8 @@ export default function Login() {
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Зареждане...' : 'Вход'}</button>
         <OAuth/>
       </form>
-      <div className='flex gap-2 mt-5 '>
-        <p>Нямате акауант? </p>
+      <div className='flex gap-2 mt-5 text-white'>
+        <p>Нямате регистрация? </p>
         <Link to='/register'>
         <span className='text-blue-500'>Регистрирайте се тук  </span>
         </Link>

@@ -14,6 +14,8 @@ import Search from './pages/Search/Search';
 import Footer from './components/Footer/Footer';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
+import ContactUs from './pages/ContactUs/ContactUs';
+
 
 
 export default function App() {
@@ -29,6 +31,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/contact" element={<ContactUs />} />
         
         <Route element={<RouteGuard />} >
           <Route path="/profile" element={<Profile />} />

@@ -148,31 +148,27 @@ export default function Search() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen">
+    <div className="flex flex-col md:flex-row bg-gray-800 text-white">
+      <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen border-gray-600">
         <form onSubmit={submitHandler} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
-              Критерии
-            </label>
+            <label className="whitespace-nowrap font-semibold">Критерии</label>
             <input
               type="text"
               id="searchTerm"
               placeholder="Търси..."
-              className="border rounded-lg p-3 w-full"
+              className="border rounded-lg p-3 w-full bg-gray-900 text-white border-gray-600"
               value={sidebardata.searchTerm}
               onChange={changesHandler}
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
-              Град / Село
-            </label>
+            <label className="whitespace-nowrap font-semibold">Град / Село</label>
             <input
               type="text"
               id="location"
               placeholder="Местоположение..."
-              className="border rounded-lg p-3 w-full"
+              className="border rounded-lg p-3 w-full bg-gray-900 text-white border-gray-600"
               value={sidebardata.location}
               onChange={changesHandler}
             />
@@ -181,8 +177,9 @@ export default function Search() {
             <label className="font-semibold">Вид:</label>
             <div className="flex gap-2">
               <input
-                type="checkbox"
+                type="radio"
                 id="all"
+                name="type"
                 className="w-5"
                 onChange={changesHandler}
                 checked={sidebardata.type === "all"}
@@ -191,8 +188,9 @@ export default function Search() {
             </div>
             <div className="flex gap-2">
               <input
-                type="checkbox"
+                type="radio"
                 id="house"
+                name="type"
                 className="w-5"
                 onChange={changesHandler}
                 checked={sidebardata.type === "house"}
@@ -201,8 +199,9 @@ export default function Search() {
             </div>
             <div className="flex gap-2">
               <input
-                type="checkbox"
+                type="radio"
                 id="apartment"
+                name="type"
                 className="w-5"
                 onChange={changesHandler}
                 checked={sidebardata.type === "apartment"}
@@ -259,7 +258,7 @@ export default function Search() {
             <select
               onChange={changesHandler}
               defaultValue={"created_at_desc"}
-              className="border rounded-lg p-3"
+              className="border rounded-lg p-3 bg-gray-900 text-white border-gray-600"
               id="sort_order"
             >
               <option value="regularPrice_desc">Низходяща цена</option>
@@ -276,19 +275,19 @@ export default function Search() {
           </button>
         </form>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 p-7 bg-gray-800">
         <h1
-          className="text-3xl font-semibold border-b p-3 mt-5"
+          className="text-3xl font-semibold border-b p-3 mt-5 border-gray-600"
           style={{ color: "#00B98E" }}
         >
           Списък с имотите:
         </h1>
-        <div className="p-7 flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4">
           {!loading && properties.length === 0 && (
-            <p className="text-xl text-slate-700">Няма намерени имоти!</p>
+            <p className="text-xl text-slate-300">Няма намерени имоти!</p>
           )}
           {loading && (
-            <p className="text-xl text-slate-700 text-center w-full">
+            <p className="text-xl text-slate-300 text-center w-full">
               Зареждане...
             </p>
           )}
@@ -302,7 +301,7 @@ export default function Search() {
           {showMore && (
             <button
               onClick={onShowMoreClick}
-              className="text-green-700 hover:underline p-7 text-center w-full"
+              className="text-green-400 hover:underline p-7 text-center w-full"
             >
               Покажи повече
             </button>

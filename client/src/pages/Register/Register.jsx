@@ -70,7 +70,7 @@ export default function Register() {
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Зареждане...' : 'Регистрация'}</button>
         <OAuth/>
       </form>
-      <div className='flex gap-2 mt-5'>
+      <div className='flex gap-2 mt-5 text-white'>
         <p>Вече имате акаунт? </p>
         <Link to='/login'>
         <span className='text-blue-500'>Вход</span>

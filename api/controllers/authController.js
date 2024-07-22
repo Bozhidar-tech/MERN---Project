@@ -14,9 +14,9 @@ export const register = async (req,res) => {
             password:  hashedPassword
         });
         await user.save();
-        return res.status(200).json({ message: "User registered successfully!" });
+        return res.status(200).json({ message: "Регистрацията е успешна!" });
     } catch (error) {
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Възникна грешка. Моля, опитайте отново" });
     }
 };
 
@@ -25,13 +25,13 @@ export const login = async (req, res, next) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (!user) {
-            return next(errorHandler(404, 'User not found!'));
+            return next(errorHandler(404, 'Грешно име или парола!'));
         }
 
         const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
 
         if (!isPasswordCorrect) {
-            return next(errorHandler(401, 'Wrong password!'));
+            return next(errorHandler(401, 'Грешно име или парола!'));
         }
 
         const token = jwt.sign({id : user._id}, process.env.JWT_SECRET);
@@ -72,7 +72,7 @@ export const googleLogin = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-    res.clearCookie('access_token').status(200).json({ message: "Logged out successfully!" });
+    res.clearCookie('access_token').status(200).json({ message: "Успешно излизане от акаунта!" });
 } 
 
 export const forgotPassword = async (req,res,next) => {
@@ -80,7 +80,7 @@ export const forgotPassword = async (req,res,next) => {
 
     try {
         const user = await User.findOne({email});
-        if(!user) return next(errorHandler(404, 'User not found!'));
+        if(!user) return next(errorHandler(404, 'Потребителят не е намерен!'));
 
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '5m'});
 
@@ -88,22 +88,22 @@ export const forgotPassword = async (req,res,next) => {
             service: 'gmail',
             auth: {
                 user: "bozhidar.nunev@gmail.com",
-                pass: "rernyyia crsladhh"
+                pass: "dxfdqggyvsbaeybu"
             }
         });
 
         let mailDetails = {
             from: "bozhidar.nunev@gmail.com",
             to: email,
-            subject: "Reset Password",
+            subject: "Смяна на парола",
             text: `http://localhost:5173/reset-password/${token}`
         };
 
         mailTransporter.sendMail(mailDetails, function(err, data) {
             if(err) {
-                return next(errorHandler(500, 'Failed to send email!'));
+                return next(errorHandler(500, 'Неуспешно изпращане на съобщение!'));
             }
-            res.status(200).json({message: "Email sent successfully!"});
+            res.status(200).json({message: "Съобщението е изпратено успешно!"});
         });
         
     } catch (error) {
@@ -122,7 +122,7 @@ export const resetPassword = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 12);
         await User.findByIdAndUpdate(id, { password: hashedPassword });
 
-        res.status(200).json({ message: 'Password has been reset successfully!' });
+        res.status(200).json({ message: 'Паролата Ви бе променена успешно!' });
     } catch (error) {
         next(error);
     }

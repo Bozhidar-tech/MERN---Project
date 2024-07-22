@@ -14,16 +14,16 @@ export const deleteProperty = async (req, res, next) => {
     const property = await Property.findById(req.params.id);
 
     if (!property) {
-        return next(errorHandler(404, 'Property not found!'));
+        return next(errorHandler(404, 'Обявата не е намерена!'));
     };
 
     if(req.user.id !== property.userRef){
-        return next(errorHandler(403, 'Unauthorized to delete this property!'));
+        return next(errorHandler(403, 'Нямате права за изтриване на обявата!'));
     };
 
     try {
         await Property.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: 'Property deleted successfully!' });
+        res.status(200).json({ message: 'Обявата е изтрита успешно!' });
     } catch (error) {
         next(error);
     }
@@ -33,11 +33,11 @@ export const editProperty = async (req, res, next) => {
     const property = await Property.findById(req.params.id);
 
     if (!property) {
-        return next(errorHandler(404, 'Property not found!'));
+        return next(errorHandler(404, 'Обявата не е намерена!'));
     };
 
     if(req.user.id !== property.userRef){
-        return next(errorHandler(403, 'Unauthorized to edit this property!'));
+        return next(errorHandler(403, 'Нямате права за промяна на обявата!'));
     };
 
     try {
@@ -56,7 +56,7 @@ export const getProperty = async (req, res, next) => {
     try {
         const property = await Property.findById(req.params.id);
         if(!property) {
-            return next(errorHandler(404, 'Property not found!'));
+            return next(errorHandler(404, 'Обявата не е намерена!'));
         }
         res.status(200).json(property);
     } catch (error) {
