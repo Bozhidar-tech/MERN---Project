@@ -115,7 +115,7 @@ export const getProperties = async (req, res, next) => {
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
-  
+
       return res.status(200).json(properties);
     } catch (error) {
       next(error);

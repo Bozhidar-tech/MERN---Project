@@ -15,7 +15,7 @@ router.post('/edit/:id', verifyToken, editProperty);
 // Get a property by ID
 router.get('/get/:id', getProperty);
 
-// Seatch 
+// Search 
 router.get('/get', getProperties);
 
 export default router; 

@@ -82,7 +82,11 @@ export default function Search() {
 
     if (e.target.id === "sort_order") {
       const [sort, order] = e.target.value.split("_");
-      setSidebardata({ ...sidebardata, sort: sort || "created_at", order: order || "desc" });
+      setSidebardata({
+        ...sidebardata,
+        sort: sort || "createdAt",
+        order: order || "desc",
+      });
     }
   };
 
@@ -109,8 +113,8 @@ export default function Search() {
 
     urlParams.set("sort", sidebardata.sort);
     urlParams.set("order", sidebardata.order);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+
+    navigate(`/search?${urlParams.toString()}`);
   };
 
   const onShowMoreClick = async () => {
@@ -163,7 +167,9 @@ export default function Search() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">Град / Село</label>
+            <label className="whitespace-nowrap font-semibold">
+              Град / Село
+            </label>
             <input
               type="text"
               id="location"
@@ -257,12 +263,12 @@ export default function Search() {
             <label className="font-semibold">Сортиране по:</label>
             <select
               onChange={changesHandler}
-              defaultValue={"created_at_desc"}
+              defaultValue={"createdAt_desc"}
               className="border rounded-lg p-3 bg-gray-900 text-white border-gray-600"
               id="sort_order"
             >
-              <option value="regularPrice_desc">Низходяща цена</option>
-              <option value="regularPrice_asc">Възходяща цена</option>
+              <option value="price_desc">Низходяща цена</option>
+              <option value="price_asc">Възходяща цена</option>
               <option value="createdAt_desc">Най-нови</option>
               <option value="createdAt_asc">Най-стари</option>
             </select>
