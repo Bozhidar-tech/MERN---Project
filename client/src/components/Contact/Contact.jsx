@@ -46,7 +46,7 @@ export default function Contact({ property }) {
             value={message}
             onChange={onChange}
             placeholder="Въведето вашето съобщение тук..."
-            className="w-full border p-3 rounded-lg"
+            className="w-full border p-3 rounded-lg text-black"
           ></textarea>
 
           <Link

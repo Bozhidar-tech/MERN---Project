@@ -1,30 +1,13 @@
-import { FaSearch, FaBars } from 'react-icons/fa';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { FaBars } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation(); // Get current location
+  const location = useLocation(); 
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('searchTerm', searchTerm);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
-  };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermUrl = urlParams.get('searchTerm');
-    if (searchTermUrl) {
-      setSearchTerm(searchTermUrl);
-    }
-  }, [location.search]);
 
   return (
     <header className="bg-gray-800 text-white shadow-md border-b-2 border-teal-400 mb-2">
@@ -35,18 +18,6 @@ export default function Header() {
             <span className="ml-2 text-teal-400">Estate</span>
           </h1>
         </Link>
-        <form onSubmit={submitHandler} className="bg-gray-800 p-2 rounded-md flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="p-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-teal-500 w-24 sm:w-64"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button type="submit" className="p-2">
-            <FaSearch className="text-teal-400" />
-          </button>
-        </form>
         <div className="sm:hidden">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
             <FaBars className="text-white" />
@@ -57,6 +28,7 @@ export default function Header() {
             <Link to="/" className="hover:text-teal-400">Начало</Link>
           )}
           <Link to="/about" className="hover:text-teal-400">За Нас</Link>
+          <Link to="/search" className="hover:text-teal-400">Търсене</Link>
           <Link to="/contact" className="hover:text-teal-400">Контакт</Link>
           <Link to="/profile">
             {currentUser ? (

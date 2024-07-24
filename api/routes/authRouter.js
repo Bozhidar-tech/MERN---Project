@@ -1,16 +1,16 @@
 import express from "express";
-import { register, login, googleLogin, logout, forgotPassword, resetPassword } from "../controllers/authController.js";
+import { register, login, googleLogin, logout, forgotPassword, resetPassword, isAuthenticated } from "../controllers/authController.js";
 
 const router = express.Router();
 
 //Register
-router.post("/register", register);
+router.post("/register", isAuthenticated,register);
 
 //Login
-router.post("/login", login);
+router.post("/login", isAuthenticated,login);
 
 //Google login
-router.post("/google", googleLogin);
+router.post("/google", isAuthenticated,googleLogin);
 
 // Logout
 router.get("/logout", logout);
