@@ -154,7 +154,7 @@ export const isAuthenticated = async (req, res, next) => {
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
-    return res.status(403).json({ message: "You are already logged in." });
+    return res.status(403).json({ message: "Вече сте влезнали в акаунтът си." });
   } catch (err) {
     next();
   }
