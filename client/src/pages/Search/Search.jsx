@@ -20,31 +20,45 @@ export default function Search() {
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const locationFromUrl = urlParams.get("location");
+    const typeFromUrl = urlParams.get("type");
+    const parkingFromUrl = urlParams.get("parking");
+    const furnishedFromUrl = urlParams.get("furnished");
+    const gasFromUrl = urlParams.get("gas");
+    const electricityFromUrl = urlParams.get("electricity");
+    const sortFromUrl = urlParams.get("sort");
+    const orderFromUrl = urlParams.get("order");
+
+    if (
+      searchTermFromUrl ||
+      typeFromUrl ||
+      parkingFromUrl ||
+      furnishedFromUrl ||
+      locationFromUrl ||
+      gasFromUrl ||
+      electricityFromUrl ||
+      sortFromUrl ||
+      orderFromUrl
+    ) {
+      setSidebardata({
+        searchTerm: searchTermFromUrl || "",
+        location: locationFromUrl || "",
+        type: typeFromUrl || "all",
+        parking: parkingFromUrl === "true" ? true : false,
+        furnished: furnishedFromUrl === "true" ? true : false,
+        gas: gasFromUrl === "true" ? true : false,
+        electricity: electricityFromUrl === "true" ? true : false,
+        sort: sortFromUrl || "created_at",
+        order: orderFromUrl || "desc",
+      });
+    }
+
     const fetchProperties = async () => {
       setLoading(true);
       setShowMore(false);
-      const urlParams = new URLSearchParams();
-
-      if (sidebardata.location) {
-        urlParams.set("location", sidebardata.location);
-      }
-
-      if (sidebardata.searchTerm) {
-        urlParams.set("searchTerm", sidebardata.searchTerm);
-      }
-
-      if (sidebardata.type && sidebardata.type !== "all") {
-        urlParams.set("type", sidebardata.type);
-      }
-
-      urlParams.set("parking", sidebardata.parking);
-      urlParams.set("furnished", sidebardata.furnished);
-      urlParams.set("gas", sidebardata.gas);
-      urlParams.set("electricity", sidebardata.electricity);
-
-      urlParams.set("sort", sidebardata.sort);
-      urlParams.set("order", sidebardata.order);
-
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/property/get?${searchQuery}`);
       const data = await res.json();
@@ -58,10 +72,14 @@ export default function Search() {
     };
 
     fetchProperties();
-  }, [sidebardata]);
+  }, [location.search]);
 
   const changesHandler = (e) => {
-    if (["all", "house", "apartment"].includes(e.target.id)) {
+    if (
+      e.target.id === "all" ||
+      e.target.id === "house" ||
+      e.target.id === "apartment"
+    ) {
       setSidebardata({ ...sidebardata, type: e.target.id });
     }
 
@@ -69,78 +87,52 @@ export default function Search() {
       setSidebardata({ ...sidebardata, searchTerm: e.target.value });
     }
 
-    if (e.target.id === "location") {
-      setSidebardata({ ...sidebardata, location: e.target.value });
+    if(e.target.id === "location"){
+      setSidebardata({...sidebardata, location: e.target.value });
     }
 
-    if (["parking", "electricity", "gas", "furnished"].includes(e.target.id)) {
+    if (
+      e.target.id === "parking" ||
+      e.target.id === "electricity" ||
+      e.target.id === "gas" ||
+      e.target.id === "furnished"
+    ) {
       setSidebardata({
         ...sidebardata,
-        [e.target.id]: e.target.checked,
+        [e.target.id]:
+          e.target.checked || e.target.checked === "true" ? true : false,
       });
     }
 
     if (e.target.id === "sort_order") {
-      const [sort, order] = e.target.value.split("_");
-      setSidebardata({
-        ...sidebardata,
-        sort: sort || "createdAt",
-        order: order || "desc",
-      });
+      const sort = e.target.value.split("_")[0] || "created_at";
+      const order = e.target.value.split("_")[1] || "desc";
+
+      setSidebardata({ ...sidebardata, sort, order });
     }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-
-    if (sidebardata.searchTerm) {
-      urlParams.set("searchTerm", sidebardata.searchTerm);
-    }
-
-    if (sidebardata.location) {
-      urlParams.set("location", sidebardata.location);
-    }
-
-    if (sidebardata.type && sidebardata.type !== "all") {
-      urlParams.set("type", sidebardata.type);
-    }
-
+    urlParams.set("searchTerm", sidebardata.searchTerm);
+    urlParams.set("location", sidebardata.location);
+    urlParams.set("type", sidebardata.type);
     urlParams.set("parking", sidebardata.parking);
     urlParams.set("furnished", sidebardata.furnished);
     urlParams.set("gas", sidebardata.gas);
     urlParams.set("electricity", sidebardata.electricity);
-
     urlParams.set("sort", sidebardata.sort);
     urlParams.set("order", sidebardata.order);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
 
-    navigate(`/search?${urlParams.toString()}`);
   };
 
   const onShowMoreClick = async () => {
     const numberOfProperties = properties.length;
     const startIndex = numberOfProperties;
     const urlParams = new URLSearchParams(location.search);
-
-    if (sidebardata.searchTerm) {
-      urlParams.set("searchTerm", sidebardata.searchTerm);
-    }
-
-    if (sidebardata.location) {
-      urlParams.set("location", sidebardata.location);
-    }
-
-    if (sidebardata.type && sidebardata.type !== "all") {
-      urlParams.set("type", sidebardata.type);
-    }
-
-    urlParams.set("parking", sidebardata.parking);
-    urlParams.set("furnished", sidebardata.furnished);
-    urlParams.set("gas", sidebardata.gas);
-    urlParams.set("electricity", sidebardata.electricity);
-
-    urlParams.set("sort", sidebardata.sort);
-    urlParams.set("order", sidebardata.order);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const res = await fetch(`/api/property/get?${searchQuery}`);

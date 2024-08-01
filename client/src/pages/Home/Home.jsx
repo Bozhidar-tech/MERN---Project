@@ -93,7 +93,7 @@ export default function Home() {
           <div className="mb-8">
             <div className="my-3">
               <h2 className="text-2xl font-semibold text-teal-400">Последно добавени къщи</h2>
-              <Link className="text-sm text-teal-300 hover:underline" to="/search?type=house">
+              <Link className="text-sm text-teal-300 hover:underline" to={"/search?type=house"}>
                 Покажи повече къщи
               </Link>
             </div>
@@ -109,7 +109,7 @@ export default function Home() {
           <div>
             <div className="my-3">
               <h2 className="text-2xl font-semibold text-teal-400">Последно добавени апартаменти</h2>
-              <Link className="text-sm text-teal-300 hover:underline" to="/search?type=apartment">
+              <Link className="text-sm text-teal-300 hover:underline" to={"/search?type=apartment"}>
                 Покажи повече апартаменти
               </Link>
             </div>
