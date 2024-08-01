@@ -76,7 +76,7 @@ export default function Home() {
               style={{
                 background: `url(${property.images[0]}) center no-repeat`,
                 backgroundSize: 'cover',
-                height: '500px',
+                height: '700px',
               }}
               className="w-full bg-gray-700"
             />

@@ -37,6 +37,9 @@ export default function PropertyItem({ property }) {
                 ? `${property.bathrooms} бани `
                 : `${property.bathrooms} баня `}
             </div>
+            <div className='font-bold text-xs'>
+              {property.price + "$"}
+            </div>
           </div>
         </div>
       </Link>
