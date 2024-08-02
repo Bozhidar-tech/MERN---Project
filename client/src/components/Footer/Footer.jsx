@@ -45,7 +45,6 @@ export default function Footer() {
             © <a href="/" className="border-b border-teal-400">Bozhidar Estate</a>, All Rights Reserved.
           </div>
           <div className="flex mt-2 md:ml-4">
-            <a href="/" className="block mb-2 md:mb-0 md:ml-4 hover:text-teal-400">Accessibility</a>
             <a href="/" className="block mb-2 md:mb-0 md:ml-4 hover:text-teal-400">Помощ</a>
             <a href="/" className="block mb-2 md:mb-0 md:ml-4 hover:text-teal-400">Често задавани въпроси</a>
           </div>
