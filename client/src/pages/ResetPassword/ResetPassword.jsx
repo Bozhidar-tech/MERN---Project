@@ -1,7 +1,10 @@
+// src/components/ResetPassword.jsx
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function ResetPassword() {
+    const { t } = useTranslation();
     const [password, setPassword] = useState("");
     const { token } = useParams();
     const [error, setError] = useState(null);
@@ -25,29 +28,29 @@ export default function ResetPassword() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(data.message || 'Неуспешна смяна на парола');
+                setError(data.message || t('passwordChangeError'));
                 setLoading(false);
                 return;
             }
 
             setLoading(false);
-            alert('Паролата е променена успешно!');
+            alert(t('passwordChangeSuccess'));
             navigate('/login');
         } catch (err) {
             setLoading(false);
-            setError('Неочаквана грешка. Моля, опитайте отново.');
+            setError(t('unexpectedError'));
         }
     };
 
     return (
         <div className='p-3 max-w-lg mx-auto'>
             <h1 className='text-3xl text-center text-white font-semibold my-7'>
-                Промяна на парола
+                {t('resetPasswordTitle')}
             </h1>
             <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
                 <input
                     type="password"
-                    placeholder='Нова парола'
+                    placeholder={t('newPasswordPlaceholder')}
                     className='border p-3 rounded-lg'
                     id='password'
                     onChange={(e) => setPassword(e.target.value)}
@@ -57,7 +60,7 @@ export default function ResetPassword() {
                     className='text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
                     style={{ backgroundColor: '#00B98E' }}
                 >
-                    {loading ? 'Зареждане...' : 'Потвърждаване'}
+                    {loading ? t('loadingText') : t('confirmButton')}
                 </button>
             </form>
             {error && <p className='text-red-500'>{error}</p>}

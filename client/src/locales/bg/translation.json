@@ -121,7 +121,6 @@
   "addListing": "Добави имот",
   "updateInformation": "Запази промените",
   "password_placeholder": "Парола",
-  "unexpected_error": "Неочакван проблем.",
   "property_type_house": "Къща",
   "property_type_apartment": "Апартамент",
   "description_label": "Описание на имота:",
@@ -135,5 +134,17 @@
   "gasProperty": "Газ: ДА",
   "no_gas": "Газ: НЕ",
   "contact_owner": "Свържи се със собственика",
-  "link_copied": "Връзката е копирана!"
+  "link_copied": "Връзката е копирана!",
+  "name": "Име",
+  "password": "Парола",
+  "all_fields_required": "Всички полета са задължителни.",
+  "registration_failed": "Регистрацията не бе успешна. Моля, опитайте отново.",
+  "registration_successful": "Регистрацията е успешна!",
+  "unexpected_error": "Неочаквана грешка. Моля, опитайте отново.",
+  "already_registered": "Вече сте регистрирани?",
+  "resetPasswordTitle": "Промяна на парола",
+  "newPasswordPlaceholder": "Нова парола",
+  "confirmButton": "Потвърждаване",
+  "passwordChangeSuccess": "Паролата е променена успешно!",
+  "passwordChangeError": "Неуспешна смяна на парола"
 }

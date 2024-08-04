@@ -121,7 +121,6 @@
   "addListing": "Add Property",
   "updateInformation": "Save changes",
   "password_placeholder": "Password",
-  "unexpected_error": "An unexpected problem occurred.",
   "property_type_house": "House",
   "property_type_apartment": "Apartment",
   "description_label": "Property Description:",
@@ -135,5 +134,17 @@
   "gasProperty": "Gas: Yes",
   "no_gas": "Gas: No",
   "contact_owner": "Contact Owner",
-  "link_copied": "Link copied!"
+  "link_copied": "Link copied!",
+  "name": "Name",
+  "password": "Password",
+  "all_fields_required": "All fields are required.",
+  "registration_failed": "Registration failed. Please try again.",
+  "registration_successful": "Registration successful!",
+  "unexpected_error": "Unexpected error. Please try again.",
+  "already_registered": "Already registered?",
+  "resetPasswordTitle": "Reset Password",
+  "newPasswordPlaceholder": "New Password",
+  "confirmButton": "Confirm",
+  "passwordChangeSuccess": "Password has been changed successfully!",
+  "passwordChangeError": "Failed to reset password"
 }
