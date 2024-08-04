@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 export default function ContactPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -37,9 +39,9 @@ export default function ContactPage() {
 
       const data = await response.json();
       setSuccess(data.message);
-      setFormData({ username: '', email: '', message: '' }); // Reset form fields
+      setFormData({ username: '', email: '', message: '' });
     } catch (err) {
-      setError(`Failed to send message: ${err.message}`);
+      setError(`${t('failedToSendMessage')}: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -47,87 +49,87 @@ export default function ContactPage() {
 
   return (
     <div className="py-20 px-4 max-w-7xl mx-auto">
-    <section className="bg-gray-400 p-8 rounded-lg shadow-lg mb-12 border border-gray-200">
-  <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">Контактна форма</h2>
-  <form onSubmit={handleSubmit} className="space-y-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label htmlFor="username" className="block text-lg font-semibold text-gray-700 mb-2">Име</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-lg font-semibold text-gray-700 mb-2">Имейл</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
-          required
-        />
-      </div>
-    </div>
-    <div>
-      <label htmlFor="message" className="block text-lg font-semibold text-gray-700 mb-2">Съобщение</label>
-      <textarea
-        id="message"
-        name="message"
-        rows="6"
-        value={formData.message}
-        onChange={handleChange}
-        className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
-        required
-      ></textarea>
-    </div>
-    <div className="text-center">
-      <button
-        type="submit"
-        className="bg-teal-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'Изпращане...' : 'Изпрати'}
-      </button>
-    </div>
-  </form>
-  {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-  {success && <p className="text-white text-center mt-4" >{success}</p>}
-</section>
+      <section className="bg-gray-400 p-8 rounded-lg shadow-lg mb-12 border border-gray-200">
+        <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">{t('contactFormTitle')}</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="username" className="block text-lg font-semibold text-gray-700 mb-2">{t('nameLabel')}</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-lg font-semibold text-gray-700 mb-2">{t('emailLabel')}</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="message" className="block text-lg font-semibold text-gray-700 mb-2">{t('messageLabel')}</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-teal-500 focus:ring-teal-500"
+              required
+            ></textarea>
+          </div>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-teal-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? t('submittingButton') : t('sendSubmitButton')}
+            </button>
+          </div>
+        </form>
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        {success && <p className="text-white text-center mt-4">{success}</p>}
+      </section>
 
       <section className="mb-12 text-center">
-        <h2 className="text-3xl font-bold mb-6 text-white">Информация за Контакт</h2>
+        <h2 className="text-3xl font-bold mb-6 text-white">{t('contactInfoTitle')}</h2>
         <div className="flex flex-col md:flex-row md:justify-center gap-8">
           <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaMapMarkerAlt className="text-teal-500 text-2xl mr-4" />
             <div>
-              <p className="text-slate-700">Sofia, Bulgaria</p>
+              <p className="text-slate-700">{t('location')}</p>
             </div>
           </div>
           <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaPhone className="text-teal-500 text-2xl mr-4" />
             <div>
-              <p className="text-slate-700">+012 345 67890</p>
+              <p className="text-slate-700">{t('phone')}</p>
             </div>
           </div>
           <div className="bg-gray-400 p-6 rounded-lg shadow-md flex items-center text-left text-lg font-semibold text-gray-700">
             <FaEnvelope className="text-teal-500 text-2xl mr-4" />
             <div>
-              <p className="text-slate-700">bozhidar.nunev@abv.bg</p>
+              <p className="text-slate-700">{t('contactUsEmail')}</p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="mb-12">
-        <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">Нашето Местоположение</h2>
+        <h2 className="text-3xl font-bold mb-6 text-slate-800 text-center">{t('ourLocationTitle')}</h2>
         <div className="relative h-[400px] rounded-lg overflow-hidden">
           <iframe
             title="Company Location"

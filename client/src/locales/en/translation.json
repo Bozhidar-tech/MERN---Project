@@ -51,5 +51,15 @@
   "deleteButton": "Delete",
   "submitButton": "Add Property",
   "imageUploadError": "Upload failed. (2MB limit exceeded)",
-  "formError": "Please upload at least 1 photo!"
+  "formError": "Please upload at least 1 photo!",
+  "contactFormTitle": "Contact Form",
+  "nameLabel": "Name",
+  "emailLabel": "Email",
+  "messageLabel": "Message",
+  "sendSubmitButton": "Send",
+  "submittingButton": "Sending...",
+  "contactInfoTitle": "Contact Information",
+  "location": "Sofia, Bulgaria",
+  "contactUsEmail": "bozhidar.nunev@abv.bg",
+  "ourLocationTitle": "Our Location"
 }
