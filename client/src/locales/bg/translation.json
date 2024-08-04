@@ -19,5 +19,11 @@
     "contactLandlord": "Свържете се с {{username}} за {{propertyTitle}}",
     "messagePlaceholder": "Въведете вашето съобщение тук...",
     "sendMessage": "Изпрати съобщението",
-    "loadingText": "Зареждане..."
+    "loadingText": "Зареждане...",
+    "googleLogin": "Вход чрез Google",
+    "bedroom": "Спалня",
+    "bedrooms": "Спални",
+    "bathroom": "Баня",
+    "bathrooms": "Бани",
+    "alreadyLoggedIn": "Вече сте влезнали в акаунтът си."
   }

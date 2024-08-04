@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 
 export default function PropertyItem({ property }) {
+  const { t } = useTranslation();
+
   return (
     <div className='bg-gray-900 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px] border border-gray-600'>
       <Link to={`/property/${property._id}`}>
@@ -29,13 +32,13 @@ export default function PropertyItem({ property }) {
           <div className='flex gap-4'>
             <div className='font-bold text-xs'>
               {property.bedrooms > 1
-                ? `${property.bedrooms} спални `
-                : `${property.bedrooms} спалня `}
+                ? `${property.bedrooms} ${t('bedrooms')}`
+                : `${property.bedrooms} ${t('bedroom')}`}
             </div>
             <div className='font-bold text-xs'>
               {property.bathrooms > 1
-                ? `${property.bathrooms} бани `
-                : `${property.bathrooms} баня `}
+                ? `${property.bathrooms} ${t('bathrooms')}`
+                : `${property.bathrooms} ${t('bathroom')}`}
             </div>
             <div className='font-bold text-xs'>
               {property.price + "$"}

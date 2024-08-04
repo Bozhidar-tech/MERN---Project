@@ -19,5 +19,11 @@
     "contactLandlord": "Contact {{username}} regarding {{propertyTitle}}",
     "messagePlaceholder": "Enter your message here...",
     "sendMessage": "Send Message",
-    "loadingText": "Loading..."
+    "loadingText": "Loading...",
+    "googleLogin": "Login with Google",
+    "bedroom": "Bedroom",
+    "bedrooms": "Bedrooms",
+    "bathroom": "Bathroom",
+    "bathrooms": "Bathrooms",
+    "alreadyLoggedIn": "You are already logged in."
   }

@@ -1,10 +1,12 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../../firebase';
-import { useDispatch } from'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../redux/user/userSlice.js';
-import { useNavigate } from'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function OAuth() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ export default function OAuth() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: result.user.displayName, email: result.user.email, image: result.user.photoURL }),
-      })
+      });
 
       const data = await res.json();
       dispatch(loginSuccess(data));
@@ -27,12 +29,12 @@ export default function OAuth() {
     } catch (error) {
       console.log('Could not login with Google:', error);
     }
-  }
+  };
 
   return (
     <button onClick={handleGoogleAuth} type='button' className='text-white p-3 rounded-lg uppercase hover:opacity-95 
         disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>
-      Вход чрез Google
+      {t('googleLogin')}
     </button>
-  )
+  );
 }
