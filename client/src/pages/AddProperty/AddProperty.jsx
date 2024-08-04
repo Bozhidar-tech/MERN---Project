@@ -8,8 +8,10 @@ import React, { useState } from "react";
 import { app } from "../../firebase";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function AddProperty() {
+  const { t } = useTranslation();
   const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -34,7 +36,7 @@ export default function AddProperty() {
 
   const imageSubmitHandler = (e) => {
     if (files.length === 0) {
-      setImageUploadError("Моля, изберете минимум 1 снимка.");
+      setImageUploadError(t('formError'));
       setUploading(false);
       return;
     }
@@ -58,11 +60,11 @@ export default function AddProperty() {
           setUploading(false);
         })
         .catch((error) => {
-          setImageUploadError("Качването неуспешно. (2MB limit exceeded)");
+          setImageUploadError(t('imageUploadError'));
           setUploading(false);
         });
     } else {
-      setImageUploadError("Можете да качите до 10 снимки на имот.");
+      setImageUploadError(t('uploadImagesLimit'));
       setUploading(false);
     }
   };
@@ -135,7 +137,7 @@ export default function AddProperty() {
 
     try {
       if (formData.images.length < 1)
-        return setError("Моля, качете поне 1 снимка!");
+        return setError(t('formError'));
       setLoadingState(true);
       setError(false);
       const data = await fetch("/api/property/add", {
@@ -149,7 +151,7 @@ export default function AddProperty() {
       setLoadingState(false);
       if (responseData.success === false) {
         setError(responseData.message);
-      };
+      }
       navigate(`/property/${responseData._id}`);
     } catch (error) {
       setError(error.message);
@@ -161,14 +163,14 @@ export default function AddProperty() {
     <div className="min-h-screen bg-gray-800 flex items-center justify-center">
       <main className="p-6 max-w-4xl mx-auto bg-gray-700 rounded-lg shadow-md">
         <h1 className="text-4xl font-bold text-center my-8 text-teal-400">
-          Добавяне на имот
+          {t('addPropertyTitle')}
         </h1>
   
         <form onSubmit={submitHandler} className="flex flex-col sm:flex-row gap-6">
           <div className="flex flex-col flex-1 gap-6">
             <input
               type="text"
-              placeholder="Заглавие"
+              placeholder={t('titlePlaceholder')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="title"
               maxLength="50"
@@ -178,7 +180,7 @@ export default function AddProperty() {
               value={formData.title}
             />
             <textarea
-              placeholder="Описание"
+              placeholder={t('descriptionPlaceholder')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="description"
               maxLength="10000"
@@ -189,7 +191,7 @@ export default function AddProperty() {
             />
             <input
               type="text"
-              placeholder="Локация"
+              placeholder={t('locationPlaceholder')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="location"
               maxLength="300"
@@ -208,7 +210,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.type === "house"}
                 />
-                <span className="text-white">Къща</span>
+                <span className="text-white">{t('house')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -218,7 +220,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.type === "apartment"}
                 />
-                <span className="text-white">Апартамент</span>
+                <span className="text-white">{t('apartment')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -228,7 +230,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.furnished}
                 />
-                <span className="text-white">Обзавеждане</span>
+                <span className="text-white">{t('furnished')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -238,7 +240,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.parking}
                 />
-                <span className="text-white">Паркомясто</span>
+                <span className="text-white">{t('parking')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -248,7 +250,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.gas}
                 />
-                <span className="text-white">Газ</span>
+                <span className="text-white">{t('gas')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -258,7 +260,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.electricity}
                 />
-                <span className="text-white">Електричество</span>
+                <span className="text-white">{t('electricity')}</span>
               </div>
             </div>
   
@@ -274,7 +276,7 @@ export default function AddProperty() {
                   value={formData.bedrooms}
                 />
                 <div>
-                  <p className="text-white">Спални</p>
+                  <p className="text-white">{t('bedrooms')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -287,7 +289,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   value={formData.bathrooms}
                 />
-                <p className="text-white">Бани</p>
+                <p className="text-white">{t('bathrooms')}</p>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -299,8 +301,8 @@ export default function AddProperty() {
                   value={formData.price}
                 />
                 <div className="flex flex-col items-center">
-                  <p className="text-white">Цена</p>
-                  <span className="text-xs text-white">( € )</span>
+                  <p className="text-white">{t('price')}</p>
+                  <span className="text-xs text-white">({t('priceCurrency')})</span>
                 </div>
               </div>
             </div>
@@ -308,9 +310,9 @@ export default function AddProperty() {
   
           <div className="flex flex-col flex-1 gap-6">
             <p className="font-semibold text-white">
-              Снимки:
+              {t('uploadImages')}
               <span className="font-normal text-gray-400 ml-2">
-                Първата снимка е корица! (лимит на снимките: 10)
+                {t('uploadImagesLimit')}
               </span>
             </p>
   
@@ -329,7 +331,7 @@ export default function AddProperty() {
                 onClick={imageSubmitHandler}
                 className="p-4 bg-teal-500 text-white rounded-md uppercase hover:bg-teal-600 disabled:opacity-80"
               >
-                {uploading ? "Качване..." : "Качи снимки"}
+                {uploading ? t('uploading') : t('uploadButton')}
               </button>
             </div>
             {imageUploadError && (
@@ -351,7 +353,7 @@ export default function AddProperty() {
                     onClick={() => imageDeleteHandler(index)}
                     className="p-3 text-red-500 rounded-md uppercase hover:opacity-75"
                   >
-                    Изтриване
+                    {t('deleteButton')}
                   </button>
                 </div>
               ))}
@@ -359,13 +361,12 @@ export default function AddProperty() {
               disabled={loadingState || uploading}
               className="p-4 bg-slate-700 text-white rounded-md uppercase hover:bg-slate-800 disabled:opacity-80"
             >
-              {loadingState ? "Добавяне..." : "Добави имота"}
+              {loadingState ? t('uploading') : t('submitButton')}
             </button>
             {error && <div className="text-red-500">{error}</div>}
           </div>
         </form>
       </main>
     </div>
-  );
-  
+  );  
 }
