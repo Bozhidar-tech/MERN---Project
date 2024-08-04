@@ -3,173 +3,156 @@ import {
   getStorage,
   uploadBytesResumable,
   ref,
-} from "firebase/storage";
-import React, { useEffect, useState } from "react";
-import { app } from "../../firebase";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+} from 'firebase/storage';
+import React, { useEffect, useState } from 'react';
+import { app } from '../../firebase';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function AddProperty() {
+  const { t } = useTranslation(); // Use the translation hook
   const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    location: "",
+    title: '',
+    description: '',
+    price: '',
+    location: '',
     bathrooms: 0,
     bedrooms: 0,
     furnished: false,
     parking: false,
     gas: false,
     electricity: false,
-    type: "house",
+    type: 'house',
     images: [],
   });
-  const [imageUploadError, setImageUploadError] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState('');
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [loadingState, setLoadingState] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
     const fetchProperty = async () => {
-      const propertyId = params.propertyId;
-      const res = await fetch(`/api/property/get/${propertyId}`);
-      const data = await res.json();
-
-      if (data.success === false) {
-        console.log(data.message);
-        return;
+      try {
+        const propertyId = params.propertyId;
+        const res = await fetch(`/api/property/get/${propertyId}`);
+        const data = await res.json();
+        if (data.success === false) {
+          console.error(data.message);
+          return;
+        }
+        setFormData(data);
+      } catch (error) {
+        console.error('Error fetching property:', error);
       }
-      setFormData(data);
     };
 
     fetchProperty();
   }, [params.propertyId]);
 
-  const imageSubmitHandler = (e) => {
+  const imageSubmitHandler = async () => {
     if (files.length === 0) {
-      setImageUploadError("Моля, изберете минимум 1 снимка.");
-      setUploading(false);
+      setImageUploadError(t('minimumOneImage'));
       return;
     }
 
-    if (files.length > 0 && files.length + formData.images.length < 11) {
-      setUploading(true);
-      setImageUploadError(false);
-      const uploadedImages = [];
+    if (files.length + formData.images.length > 10) {
+      setImageUploadError(t('imageLimit'));
+      return;
+    }
 
-      for (let i = 0; i < files.length; i++) {
-        uploadedImages.push(storedImages(files[i]));
-      }
+    setUploading(true);
+    setImageUploadError('');
 
-      Promise.all(uploadedImages)
-        .then((urls) => {
-          setFormData({
-            ...formData,
-            images: formData.images.concat(urls),
-          });
-          setImageUploadError(false);
-          setUploading(false);
-        })
-        .catch((error) => {
-          setImageUploadError("Качването неуспешно. (2MB limit exceeded)");
-          setUploading(false);
-        });
-    } else {
-      setImageUploadError("Можете да качите до 10 снимки на имот.");
+    try {
+      const uploadedImages = await Promise.all(
+        Array.from(files).map((file) => storedImages(file))
+      );
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, ...uploadedImages],
+      }));
+    } catch (error) {
+      setImageUploadError(t('uploadFailed'));
+    } finally {
       setUploading(false);
     }
   };
 
-  const storedImages = async (file) => {
+  const storedImages = (file) => {
     return new Promise((resolve, reject) => {
       const storage = getStorage(app);
       const fileName = new Date().getTime() + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
+
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          // Optionally, handle upload progress here
         },
-        (error) => {
-          reject(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        (error) => reject(error),
+        async () => {
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             resolve(downloadURL);
-          });
+          } catch (error) {
+            reject(error);
+          }
         }
       );
     });
   };
 
   const imageDeleteHandler = (index) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
-    });
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
   };
 
   const changesHandler = (e) => {
-    if (e.target.id === "house" || e.target.id === "apartment") {
-      setFormData({
-        ...formData,
-        type: e.target.id,
-      });
-    }
+    const { id, type, checked, value } = e.target;
 
-    if (
-      e.target.id === "furnished" ||
-      e.target.id === "parking" ||
-      e.target.id === "gas" ||
-      e.target.id === "electricity"
-    ) {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.checked,
-      });
-    }
-
-    if (
-      e.target.type === "number" ||
-      e.target.type === "text" ||
-      e.target.type === "textarea"
-    ) {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.value,
-      });
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === 'checkbox' ? checked : value,
+    }));
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (formData.images.length < 1) {
+      setError(t('minimumOneImage'));
+      return;
+    }
+
+    setLoadingState(true);
+    setError('');
+
     try {
-      if (formData.images.length < 1)
-        return setError("Трябва да качите поне 1 снимка.");
-      setLoadingState(true);
-      setError(false);
-      const data = await fetch(`/api/property/edit/${params.propertyId}`, {
-        method: "POST",
+      const response = await fetch(`/api/property/edit/${params.propertyId}`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ...formData, userRef: currentUser._id }),
       });
-      const responseData = await data.json();
-      setLoadingState(false);
-      if (responseData.success === false) {
-        setError(responseData.message);
+      const data = await response.json();
+
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        navigate(`/property/${data._id}`);
       }
-      navigate(`/property/${responseData._id}`);
     } catch (error) {
       setError(error.message);
+    } finally {
       setLoadingState(false);
     }
   };
@@ -178,24 +161,24 @@ export default function AddProperty() {
     <div className="min-h-screen bg-gray-800 flex items-center justify-center">
       <main className="p-6 max-w-4xl mx-auto bg-gray-700 rounded-lg shadow-md">
         <h1 className="text-4xl font-bold text-center my-8 text-teal-400">
-          Редактиране на данните
+          {t('editProperty')}
         </h1>
-  
+
         <form onSubmit={submitHandler} className="flex flex-col sm:flex-row gap-6">
           <div className="flex flex-col flex-1 gap-6">
             <input
               type="text"
-              placeholder="Заглавие"
+              placeholder={t('title')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="title"
               maxLength="50"
               minLength="10"
               required
               onChange={changesHandler}
-              value={formData.title || ""}
+              value={formData.title || ''}
             />
             <textarea
-              placeholder="Описание"
+              placeholder={t('description')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="description"
               maxLength="10000"
@@ -206,7 +189,7 @@ export default function AddProperty() {
             />
             <input
               type="text"
-              placeholder="Локация"
+              placeholder={t('location')}
               className="border p-4 rounded-md shadow-sm border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
               id="location"
               maxLength="30"
@@ -215,7 +198,7 @@ export default function AddProperty() {
               onChange={changesHandler}
               value={formData.location}
             />
-  
+
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <input
@@ -224,9 +207,9 @@ export default function AddProperty() {
                   name="type"
                   className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
-                  checked={formData.type === "house"}
+                  checked={formData.type === 'house'}
                 />
-                <span className="text-white">Къща</span>
+                <span className="text-white">{t('house')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -235,9 +218,9 @@ export default function AddProperty() {
                   name="type"
                   className="w-5 h-5 text-teal-500"
                   onChange={changesHandler}
-                  checked={formData.type === "apartment"}
+                  checked={formData.type === 'apartment'}
                 />
-                <span className="text-white">Апартамент</span>
+                <span className="text-white">{t('apartment')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -247,7 +230,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.furnished}
                 />
-                <span className="text-white">Обзаведен</span>
+                <span className="text-white">{t('furnished')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -257,7 +240,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.parking}
                 />
-                <span className="text-white">Паркомясто</span>
+                <span className="text-white">{t('parking')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -267,7 +250,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.gas}
                 />
-                <span className="text-white">Газ</span>
+                <span className="text-white">{t('gas')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -277,10 +260,10 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   checked={formData.electricity}
                 />
-                <span className="text-white">Електричество</span>
+                <span className="text-white">{t('electricity')}</span>
               </div>
             </div>
-  
+
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <input
@@ -293,7 +276,7 @@ export default function AddProperty() {
                   value={formData.bedrooms}
                 />
                 <div>
-                  <p className="text-white">Спални</p>
+                  <p className="text-white">{t('bedrooms')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -306,7 +289,7 @@ export default function AddProperty() {
                   onChange={changesHandler}
                   value={formData.bathrooms}
                 />
-                <p className="text-white">Бани</p>
+                <p className="text-white">{t('bathrooms')}</p>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -318,21 +301,21 @@ export default function AddProperty() {
                   value={formData.price}
                 />
                 <div className="flex flex-col items-center">
-                  <p className="text-white">Цена</p>
+                  <p className="text-white">{t('price')}</p>
                   <span className="text-xs text-white">( € )</span>
                 </div>
               </div>
             </div>
           </div>
-  
+
           <div className="flex flex-col flex-1 gap-6">
             <p className="font-semibold text-white">
-              Снимки:
+              {t('imageUpload')}
               <span className="font-normal text-gray-400 ml-2">
-                Първата снимка е корица! (лимит на снимките: 10)
+                {t('imageUploadHint')}
               </span>
             </p>
-  
+
             <div className="flex gap-4">
               <input
                 onChange={(e) => setFiles(e.target.files)}
@@ -348,7 +331,7 @@ export default function AddProperty() {
                 onClick={imageSubmitHandler}
                 className="p-4 bg-teal-500 text-white rounded-md uppercase hover:bg-teal-600 disabled:opacity-80"
               >
-                {uploading ? "Качване..." : "Качи снимки"}
+                {uploading ? t('uploading') : t('uploadImages')}
               </button>
             </div>
             {imageUploadError && (
@@ -370,7 +353,7 @@ export default function AddProperty() {
                     onClick={() => imageDeleteHandler(index)}
                     className="p-3 text-red-500 rounded-md uppercase hover:opacity-75"
                   >
-                    Изтриване
+                    {t('deletePhoto')}
                   </button>
                 </div>
               ))}
@@ -378,7 +361,7 @@ export default function AddProperty() {
               disabled={loadingState || uploading}
               className="p-4 bg-slate-700 text-white rounded-md uppercase hover:bg-slate-800 disabled:opacity-80"
             >
-              {loadingState ? "Запазване на промените..." : "Запази промените"}
+              {loadingState ? t('savingChanges') : t('saveChanges')}
             </button>
             {error && <div className="text-red-500">{error}</div>}
           </div>
@@ -386,6 +369,4 @@ export default function AddProperty() {
       </main>
     </div>
   );
-  
-  
 }

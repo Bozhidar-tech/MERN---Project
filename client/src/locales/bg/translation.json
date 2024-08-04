@@ -36,7 +36,6 @@
   "apartment": "Апартамент",
   "furnished": "Обзавеждане",
   "parking": "Паркомясто",
-  "gas": "Газ",
   "electricity": "Електричество",
   "price": "Цена",
   "priceCurrency": "€",
@@ -61,5 +60,19 @@
   "contactInfoTitle": "Информация за Контакт",
   "location": "София, България",
   "contactUsEmail": "bozhidar.nunev@abv.bg",
-  "ourLocationTitle": "Нашето Местоположение"
+  "ourLocationTitle": "Нашето Местоположение",
+  "editProperty": "Редактиране на обявата",
+  "titleEdit": "Заглавие",
+  "description": "Описание",
+  "locationEdit": "Локация",
+  "gas": "Газ",
+  "imageUpload": "Снимки:",
+  "imageUploadHint": "Първата снимка е корица! (лимит на снимките: 10)",
+  "saveChanges": "Запази промените",
+  "savingChanges": "Запазване на промените...",
+  "minimumOneImage": "Трябва да качите поне 1 снимка.",
+  "imageLimit": "Можете да качите до 10 снимки на имот.",
+  "uploadFailed": "Качването неуспешно. (2MB limit exceeded)",
+  "deletePhoto": "Изтриване",
+  "error": "Грешка"
 }

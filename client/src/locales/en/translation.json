@@ -40,7 +40,6 @@
   "apartment": "Apartment",
   "furnished": "Furnished",
   "parking": "Parking",
-  "gas": "Gas",
   "electricity": "Electricity",
   "price": "Price",
   "priceCurrency": "€",
@@ -61,5 +60,19 @@
   "contactInfoTitle": "Contact Information",
   "location": "Sofia, Bulgaria",
   "contactUsEmail": "bozhidar.nunev@abv.bg",
-  "ourLocationTitle": "Our Location"
+  "ourLocationTitle": "Our Location",
+  "editProperty": "Edit Property",
+  "title": "Title",
+  "description": "Description",
+  "locationEdit": "Location",
+  "gas": "Gas",
+  "imageUpload": "Images:",
+  "imageUploadHint": "The first image is the cover! (limit of 10 images)",
+  "saveChanges": "Save Changes",
+  "savingChanges": "Saving Changes...",
+  "minimumOneImage": "You must upload at least 1 image.",
+  "imageLimit": "You can upload up to 10 images.",
+  "uploadFailed": "Upload failed. (2MB limit exceeded)",
+  "deletePhoto": "Delete",
+  "error": "Error"
 }
