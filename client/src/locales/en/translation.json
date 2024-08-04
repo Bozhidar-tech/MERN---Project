@@ -120,5 +120,20 @@
   "myProperties": "My Properties",
   "addListing": "Add Property",
   "updateInformation": "Save changes",
-  "password_placeholder": "Password"
+  "password_placeholder": "Password",
+  "unexpected_error": "An unexpected problem occurred.",
+  "property_type_house": "House",
+  "property_type_apartment": "Apartment",
+  "description_label": "Property Description:",
+  "bedrooms_label": "Bedrooms",
+  "bathrooms_label": "Bathrooms",
+  "parkingProperty": "Parking available",
+  "no_parking": "No parking",
+  "unfurnished": "Unfurnished",
+  "heating": "Heating: Yes",
+  "no_heating": "Heating: No",
+  "gasProperty": "Gas: Yes",
+  "no_gas": "Gas: No",
+  "contact_owner": "Contact Owner",
+  "link_copied": "Link copied!"
 }

@@ -14,9 +14,11 @@ import {
   FaShare,
 } from "react-icons/fa";
 import Contact from "../../components/Contact/Contact";
+import { useTranslation } from 'react-i18next';
 
 export default function Property() {
   SwiperCore.use([Navigation]);
+  const { t } = useTranslation();
   const [property, setProperty] = useState(null);
   const [loadingState, setLoadingState] = useState(false);
   const [error, setError] = useState(false);
@@ -49,8 +51,8 @@ export default function Property() {
 
   return (
     <main>
-      {loadingState && <p className="text-center my-7 text-2xl">Зареждане...</p>}
-      {error && <p className="text-center my-7 text-2xl">Неочакван проблем.</p>}
+      {loadingState && <p className="text-center my-7 text-2xl">{t('loading')}</p>}
+      {error && <p className="text-center my-7 text-2xl">{t('unexpected_error')}</p>}
       {property && !loadingState && !error && (
         <div>
           <Swiper navigation>
@@ -80,27 +82,27 @@ export default function Property() {
           </div>
           {copied && (
             <p className="fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2">
-              Връзката е копирана!
+              {t('link_copied')}
             </p>
           )}
           <div className="flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4">
-          <p className='text-2xl font-semibold text-white'>
+            <p className='text-2xl font-semibold text-white'>
               {property.title} - € {property.price.toLocaleString('en-US')}
             </p>
 
-            <p className="flex items-center mt-6 gap-2 text-white  text-sm">
+            <p className="flex items-center mt-6 gap-2 text-white text-sm">
               <FaMapMarkerAlt className="text-green-700" />
               {property.location}
             </p>
 
             <div className="flex gap-4">
               <p className="bg-green-700 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                {property.type === "house" ? "Къща" : "Апартамент"}
+                {property.type === "house" ? t('property_type_house') : t('property_type_apartment')}
               </p>
             </div>
 
             <p className="text-white">
-              <span className="font-semibold ">Описание на имота: </span>
+              <span className="font-semibold">{t('description_label')} </span>
               {property.description}
             </p>
 
@@ -108,36 +110,38 @@ export default function Property() {
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBed className="text-lg " />
                 {property.bedrooms > 1
-                  ? `${property.bedrooms} спални `
-                  : `${property.bedrooms} спалня `}
+                  ? `${property.bedrooms} ${t('bedrooms_label')} `
+                  : `${property.bedrooms} ${t('bedrooms_label')} `}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBath className="text-lg" />
                 {property.bathrooms > 1
-                  ? `${property.bathrooms} бани `
-                  : `${property.bathrooms} баня `}
+                  ? `${property.bathrooms} ${t('bathrooms_label')} `
+                  : `${property.bathrooms} ${t('bathrooms_label')} `}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaParking className="text-lg" />
-                {property.parking ? "Място за паркиране" : "Без паркомясто"}
+                {property.parking ? t('parkingProperty') : t('no_parking')}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaChair className="text-lg" />
-                {property.furnished ? "Обзаведен" : "Необзаведен"}
+                {property.furnished ? t('furnished') : t('unfurnished')}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaChair className="text-lg" />
-                {property.electricity ? "ТЕЦ: ДА" : "ТЕЦ: НЕ"}
+                {property.electricity ? t('heating') : t('no_heating')}
               </li>
               <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaChair className="text-lg" />
-                {property.gas ? "Газ: ДА" : "Газ: НЕ"}
+                {property.gas ? t('gasProperty') : t('no_gas')}
               </li>
             </ul>
-                    {currentUser && property.userRef !== currentUser._id && !contact && (
-            <button onClick={()=> setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95">Свържи се със собственика</button>
-                    )}
-                    {contact && <Contact property={property}/>}
+            {currentUser && property.userRef !== currentUser._id && !contact && (
+              <button onClick={() => setContact(true)} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95">
+                {t('contact_owner')}
+              </button>
+            )}
+            {contact && <Contact property={property}/>}
           </div>
         </div>
       )}
