@@ -91,5 +91,11 @@
   "showMoreHouses": "Show more houses",
   "latestApartments": "Latest Added Apartments",
   "showMoreApartments": "Show more apartments",
-  "loading": "Loading..."
+  "passwordPlaceholder": "Password",
+  "loading": "Loading...",
+  "loginButton": "Login",
+  "registerPrompt": "Don't have an account? ",
+  "registerLink": "Register here",
+  "forgotPasswordLink": "Forgot password",
+  "loginError": "Login failed. Please try again."
 }
