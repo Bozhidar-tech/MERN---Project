@@ -19,8 +19,10 @@ import {
   logoutSuccess,
 } from "../../redux/user/userSlice";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 export default function Profile() {
+  const { t } = useTranslation(); // Use the translation hook
   const fileInput = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
@@ -83,7 +85,7 @@ export default function Profile() {
         const data = await updateInfo.json();
         if (data.success === false) {
           dispatch(
-            updateFailure(data.message || "Промяната на данни е неуспешно.")
+            updateFailure(data.message || t("updateError"))
           );
           setLoadingState(false);
           return;
@@ -98,7 +100,7 @@ export default function Profile() {
   };
 
   const deleteHandler = async () => {
-    if (!window.confirm("Сигурни ли сте, че искате да изтриете регистрацията си ?")) {
+    if (!window.confirm(t("deleteAccountConfirm"))) {
       return;
     }
 
@@ -110,7 +112,7 @@ export default function Profile() {
       const data = await deleteUser.json();
       if (data.success === false) {
         dispatch(
-          deleteFailure(data.message || "Изтриването неуспешно. Моля, опитайте пак.")
+          deleteFailure(data.message || t("deleteAccountError"))
         );
       }
       dispatch(deleteSuccess(data));
@@ -126,7 +128,7 @@ export default function Profile() {
       const data = await logoutUser.json();
       if (data.success === false) {
         dispatch(
-          logoutFailure(data.message || "Излизането неуспешно. Моля, опитайте пак.")
+          logoutFailure(data.message || t("logoutError"))
         );
         return;
       }
@@ -137,7 +139,7 @@ export default function Profile() {
   };
 
   const deletePropertyHandler = async (propertyId) => {
-    if (!window.confirm("Сигурни ли сте, че искате да изтриете тази обява?")) {
+    if (!window.confirm(t("deletePropertyConfirm"))) {
       return;
     }
 
@@ -154,14 +156,14 @@ export default function Profile() {
       setLoadingState(false);
 
       if (data.success === false) {
-        setDeletePropertyError(data.message || "Неуспешно изтриване на обява. Моля, опитайте отново.");
+        setDeletePropertyError(data.message || t("deletePropertyError"));
         return;
       }
       setMyProperties((prev) => prev.filter((property) => property._id !== propertyId));
-      alert('Обявата е изтрита успешно.');
+      alert(t('deletePropertySuccess'));
     } catch (error) {
       setLoadingState(false);
-      setDeletePropertyError(error.message || "Неочаквана грешка. Моля, опитайте отново");
+      setDeletePropertyError(error.message || t("deletePropertyError"));
     }
   };
 
@@ -190,7 +192,7 @@ export default function Profile() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-gray-800 text-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-semibold text-center my-7">Моят профил</h1>
+      <h1 className="text-3xl font-semibold text-center my-7">{t('profile')}</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-4">
         <input
           onChange={(e) => setFile(e.target.files[0])}
@@ -207,20 +209,18 @@ export default function Profile() {
         />
         <p className="text-sm self-center">
           {uploadError ? (
-            <span className="text-red-500">
-              Неуспешно качване на снимка. (Размерът трябва да е под 2MB)
-            </span>
+            <span className="text-red-500">{t('uploadError')}</span>
           ) : filePercentage > 0 && filePercentage < 100 ? (
-            <span className="text-slate-300">{`Uploading ${filePercentage}%`}</span>
+            <span className="text-slate-300">{t('uploadingPercentage', { percentage: filePercentage })}</span>
           ) : filePercentage === 100 ? (
-            <span className="text-green-400">Снимката е качена успешно!</span>
+            <span className="text-green-400">{t('uploadSuccess')}</span>
           ) : (
             ""
           )}
         </p>
         <input
           type="text"
-          placeholder="Име"
+          placeholder="Name"
           defaultValue={currentUser.username}
           id="username"
           className="border border-gray-600 p-3 rounded-lg bg-gray-900 text-white"
@@ -236,7 +236,7 @@ export default function Profile() {
         />
         <input
           type="password"
-          placeholder="Парола"
+          placeholder={t('password_placeholder')}
           id="password"
           className="border border-gray-600 p-3 rounded-lg bg-gray-900 text-white"
           onChange={changesHandler}
@@ -245,13 +245,13 @@ export default function Profile() {
           disabled={loading || loadingState}
           className="text-white p-3 rounded-lg uppercase bg-teal-400 hover:bg-teal-300 disabled:bg-teal-600"
         >
-          {loadingState ? "Зареждане..." : "Промени данните"}
+          {loadingState ? t('loading') : t('updateInformation')}
         </button>
         <Link
           className="bg-teal-400 text-white p-3 rounded-lg uppercase text-center hover:bg-teal-300"
           to={"/add-property"}
         >
-          Добави обява
+          {t('addListing')}
         </Link>
       </form>
       <div className="flex justify-between mt-5 space-x-4">
@@ -259,38 +259,38 @@ export default function Profile() {
           onClick={deleteHandler}
           className="text-red-500 cursor-pointer hover:text-red-400 font-semibold py-2 px-4 border border-red-500 rounded-lg hover:bg-red-700 transition duration-300"
         >
-          Изтриване на акаунта
+          {t('deleteAccount')}
         </span>
         <span
           onClick={logoutHandler}
           className="text-teal-400 cursor-pointer hover:text-teal-300 font-semibold py-2 px-4 border border-teal-400 rounded-lg hover:bg-teal-700 transition duration-300"
         >
-          Изход
+          {t('logout')}
         </span>
       </div>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {successfulUpdate && (
-        <p className="text-green-400 mt-4">Информацията е променена успешно</p>
+        <p className="text-green-400 mt-4">{t('updateSuccess')}</p>
       )}
       <button
         onClick={togglePropertiesVisibility}
         className="text-white font-bold my-3 py-2 px-4 rounded-lg w-full bg-teal-400 hover:bg-teal-300 transition duration-300"
       >
-        {propertiesVisible ? 'Скрий обявите' : 'Преглед на обявите'}
+        {propertiesVisible ? t('hideListings') : t('viewListings')}
       </button>
       {propertiesVisible && (
         <>
           {propertiesError && (
             <p className="text-red-500 mt-4">
-              Неуспешно зареждане на обявите. Моля, опитайте отново.
+              {t('propertiesError')}
             </p>
           )}
 
           {myProperties && myProperties.length > 0 ? (
             <div className='flex flex-col gap-4'>
               <h1 className='text-center mt-7 text-2xl font-semibold'>
-                Моите обяви
+                {t('myProperties')}
               </h1>
               {myProperties.map((property) => (
                 <div
@@ -316,17 +316,17 @@ export default function Profile() {
                       onClick={() => deletePropertyHandler(property._id)}
                       className='text-red-500 uppercase'
                     >
-                      Изтриване на обявата
+                      {t('deleteListing')}
                     </button>
                     <Link to={`/edit-property/${property._id}`}>
-                      <button className='text-teal-400 uppercase'>Редактиране на обявата</button>
+                      <button className='text-teal-400 uppercase'>{t('editListing')}</button>
                     </Link>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-red-500 mt-4">Няма намерени обяви.</p>
+            <p className="text-red-500 mt-4">{t('noProperties')}</p>
           )}
         </>
       )}
