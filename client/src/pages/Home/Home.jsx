@@ -5,10 +5,12 @@ import { Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';
 import 'swiper/css/bundle';
 import PropertyItem from '../../components/PropertyItem/PropertyItem';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 SwiperCore.use([Navigation]);
 
 export default function Home() {
+  const { t } = useTranslation(); // Use the translation hook
   const [houseProperties, setHouseProperties] = useState([]);
   const [apartmentProperties, setApartmentProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +23,7 @@ export default function Home() {
         const houseRes = await fetch('/api/property/get?type=house&limit=4');
         if (!houseRes.ok) {
           setError(true);
-          setErrorMessage('Неуспешно зареждане на къщите.');
+          setErrorMessage(t('errorLoadingHouses'));
           return;
         }
         const houseData = await houseRes.json();
@@ -30,7 +32,7 @@ export default function Home() {
         const apartmentRes = await fetch('/api/property/get?type=apartment&limit=4');
         if (!apartmentRes.ok) {
           setError(true);
-          setErrorMessage('Неуспешно зареждане на апартаментите.');
+          setErrorMessage(t('errorLoadingApartments'));
           return;
         }
         const apartmentData = await apartmentRes.json();
@@ -39,32 +41,28 @@ export default function Home() {
         setLoading(false);
       } catch (error) {
         setError(true);
-        setErrorMessage('Неочаквана грешка. Моля, опитайте отново');
+        setErrorMessage(t('unexpectedError'));
         console.error('Error fetching properties:', error.message);
       }
     };
 
     fetchProperties();
-  }, []);
+  }, [t]);
 
   return (
     <div className="bg-gray-800 text-white">
       <div className="flex flex-col gap-6 p-8 max-w-6xl mx-auto text-center bg-gray-900 rounded-lg shadow-md">
-        <h1 className="text-slate-200 font-bold text-3xl lg:text-6xl">
-          Намерете бъдещият си <span className="text-teal-400">дом</span>
-          <br />
-          лесно чрез нашата агенция
-        </h1>
+        <h1 className="text-slate-200 font-bold text-3xl lg:text-6xl" dangerouslySetInnerHTML={{ __html: t('findYourHome') }} />
         <p className="text-gray-400 text-xs sm:text-sm">
-          Bozhidar Estate е най-доброто място да намерите бъдещият си дом.
+          {t('bestPlace')}
           <br />
-          Имаме голям избор на имоти, от които да избирате.
+          {t('largeSelection')}
         </p>
         <Link
           to="/search"
           className="text-xs sm:text-sm text-teal-400 font-bold hover:underline"
         >
-          Потърсете Вашият мечтан дом тук...
+          {t('searchDreamHome')}
         </Link>
       </div>
 
@@ -86,15 +84,15 @@ export default function Home() {
 
       {/* Properties Section */}
       <div className="max-w-6xl mx-auto p-8 bg-gray-900 rounded-lg shadow-lg mb-10">
-        {loading && <p className="text-center text-lg">Зареждане...</p>}
+        {loading && <p className="text-center text-lg">{t('loading')}</p>}
         {error && <p className="text-center text-red-500">{errorMessage}</p>}
 
         {houseProperties.length > 0 && (
           <div className="mb-8">
             <div className="my-3">
-              <h2 className="text-2xl font-semibold text-teal-400">Последно добавени къщи</h2>
+              <h2 className="text-2xl font-semibold text-teal-400">{t('latestHouses')}</h2>
               <Link className="text-sm text-teal-300 hover:underline" to={"/search?type=house"}>
-                Покажи повече къщи
+                {t('showMoreHouses')}
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -108,9 +106,9 @@ export default function Home() {
         {apartmentProperties.length > 0 && (
           <div>
             <div className="my-3">
-              <h2 className="text-2xl font-semibold text-teal-400">Последно добавени апартаменти</h2>
+              <h2 className="text-2xl font-semibold text-teal-400">{t('latestApartments')}</h2>
               <Link className="text-sm text-teal-300 hover:underline" to={"/search?type=apartment"}>
-                Покажи повече апартаменти
+                {t('showMoreApartments')}
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">

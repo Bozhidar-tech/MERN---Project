@@ -74,5 +74,22 @@
   "imageLimit": "You can upload up to 10 images.",
   "uploadFailed": "Upload failed. (2MB limit exceeded)",
   "deletePhoto": "Delete",
-  "error": "Error"
+  "error": "Error",
+  "forgotPassword": "Forgot Password",
+  "emailPlaceholder": "Email",
+  "sendEmail": "Send Email",
+  "emailSentSuccess": "Email has been sent successfully!",
+  "emailSendError": "Failed to send email",
+  "unexpectedError": "Unexpected error. Please try again.",
+  "findYourHome": "Find your future <span>home</span> easily through our agency",
+  "bestPlace": "Bozhidar Estate is the best place to find your future home.",
+  "largeSelection": "We have a large selection of properties to choose from.",
+  "searchDreamHome": "Find your dream home here...",
+  "errorLoadingHouses": "Failed to load houses.",
+  "errorLoadingApartments": "Failed to load apartments.",
+  "latestHouses": "Latest Added Houses",
+  "showMoreHouses": "Show more houses",
+  "latestApartments": "Latest Added Apartments",
+  "showMoreApartments": "Show more apartments",
+  "loading": "Loading..."
 }

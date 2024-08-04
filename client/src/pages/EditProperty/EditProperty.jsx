@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function AddProperty() {
-  const { t } = useTranslation(); // Use the translation hook
+  const { t } = useTranslation();
   const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -93,7 +93,6 @@ export default function AddProperty() {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          // Optionally, handle upload progress here
         },
         (error) => reject(error),
         async () => {

@@ -74,5 +74,22 @@
   "imageLimit": "Можете да качите до 10 снимки на имот.",
   "uploadFailed": "Качването неуспешно. (2MB limit exceeded)",
   "deletePhoto": "Изтриване",
-  "error": "Грешка"
+  "error": "Грешка",
+  "forgotPassword": "Забравена парола",
+  "emailPlaceholder": "Email",
+  "sendEmail": "Изпрати email",
+  "emailSentSuccess": "Съобщението е изпратено успешно!",
+  "emailSendError": "Неуспешно изпращане на имейл",
+  "unexpectedError": "Неочаквана грешка. Моля, опитайте отново.",
+  "findYourHome": "Намерете бъдещият си <span>дом</span> лесно чрез нашата агенция",
+  "bestPlace": "Bozhidar Estate е най-доброто място да намерите бъдещият си дом.",
+  "largeSelection": "Имаме голям избор на имоти, от които да избирате.",
+  "searchDreamHome": "Потърсете Вашият мечтан дом тук...",
+  "errorLoadingHouses": "Неуспешно зареждане на къщите.",
+  "errorLoadingApartments": "Неуспешно зареждане на апартаментите.",
+  "latestHouses": "Последно добавени къщи",
+  "showMoreHouses": "Покажи повече къщи",
+  "latestApartments": "Последно добавени апартаменти",
+  "showMoreApartments": "Покажи повече апартаменти",
+  "loading": "Зареждане..."
 }

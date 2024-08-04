@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -10,45 +12,58 @@ export default function ForgotPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
       
+        setLoading(true);
+
         try {
-          const response = await fetch("/api/auth/forgot-password", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-          });
-      
-          const data = await response.json();
-      
-          if (!response.ok) {
-            setLoading(false);
-            setError(data.message || 'Неуспашно изпращане на имейл');
-            return;
-          } 
+            const response = await fetch("/api/auth/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
 
-          setLoading(false);
-          setError(null);
-          alert('Съобщението е изпратено успешно!');
-          navigate('/');
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.message || t('emailSendError'));
+                setLoading(false);
+                return;
+            }
+
+            setError(null);
+            alert(t('emailSentSuccess'));
+            navigate('/');
         } catch (err) {
+            setError(t('unexpectedError'));
+        } finally {
             setLoading(false);
-            setError('Неочаквана грешка. Моля, опитайте отново.');
         }
-      };
+    };
 
-  return (
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-white text-3xl text-center font-semibold my-7'>
-        Забравена парола
-      </h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="email" placeholder='Email' 
-        className='border p-3 rounded-lg' id='email' onChange={(e)=> setEmail(e.target.value)}/>
-        <button disabled={loading} className='text-white p-3 rounded-lg uppercase hover:opacity-95 
-        disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>{loading ? 'Зареждане...' : 'Изпрати email'}</button>
-      </form>
-      {error && <p className='text-red-500'>{error}</p>}
-    </div>
-  )
+    return (
+        <div className='p-3 max-w-lg mx-auto'>
+            <h1 className='text-white text-3xl text-center font-semibold my-7'>
+                {t('forgotPassword')}
+            </h1>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+                <input 
+                    type="email" 
+                    placeholder={t('emailPlaceholder')} 
+                    className='border p-3 rounded-lg' 
+                    id='email' 
+                    onChange={(e) => setEmail(e.target.value)} 
+                />
+                <button 
+                    disabled={loading} 
+                    className='text-white p-3 rounded-lg uppercase hover:opacity-95 
+                    disabled:opacity-80' 
+                    style={{ backgroundColor: '#00B98E' }}
+                >
+                    {loading ? t('loading') : t('sendEmail')}
+                </button>
+            </form>
+            {error && <p className='text-red-500'>{error}</p>}
+        </div>
+    );
 }
