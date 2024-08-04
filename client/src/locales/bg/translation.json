@@ -4,5 +4,20 @@
     "search": "Търсене",
     "contact": "Контакт",
     "login": "Вход",
-    "register": "Регистрация"
+    "register": "Регистрация",
+    "contactUs": "Връзка с нас",
+    "address": "София, България",
+    "phone": "+012 345 67890",
+    "email": "info@example.com",
+    "dynamicLinks": "Динамични линкове",
+    "ourServices": "Нашите услуги",
+    "termsConditions": "Условия за ползване",
+    "help": "Помощ",
+    "faq": "Често задавани въпроси",
+    "companyName": "Bozhidar Estate",
+    "allRightsReserved": "Всички права запазени",
+    "contactLandlord": "Свържете се с {{username}} за {{propertyTitle}}",
+    "messagePlaceholder": "Въведете вашето съобщение тук...",
+    "sendMessage": "Изпрати съобщението",
+    "loadingText": "Зареждане..."
   }

@@ -4,5 +4,20 @@
     "search": "Search",
     "contact": "Contact",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",  
+    "contactUs": "Contact Us",
+    "address": "Sofia, Bulgaria",
+    "phone": "+012 345 67890",
+    "email": "info@example.com",
+    "dynamicLinks": "Dynamic Links",
+    "ourServices": "Our Services",
+    "termsConditions": "Terms & Conditions",
+    "help": "Help",
+    "faq": "Frequently Asked Questions",
+    "companyName": "Bozhidar Estate",
+    "allRightsReserved": "All Rights Reserved",
+    "contactLandlord": "Contact {{username}} regarding {{propertyTitle}}",
+    "messagePlaceholder": "Enter your message here...",
+    "sendMessage": "Send Message",
+    "loadingText": "Loading..."
   }
