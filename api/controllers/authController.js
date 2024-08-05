@@ -18,6 +18,19 @@ export const register = [
     }
     
     try {
+      const existingUser = await User.findOne({
+        $or: [{ username: req.body.username }, { email: req.body.email }]
+      });
+
+      if (existingUser) {
+        if (existingUser.username === req.body.username) {
+          return res.status(400).json({ errors: [{ msg: 'Потребителското име вече е заето.' }] });
+        }
+        if (existingUser.email === req.body.email) {
+          return res.status(400).json({ errors: [{ msg: 'Имейл адресът вече е зает.' }] });
+        }
+      }
+
       const salt = await bcrypt.genSalt(12);
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       const user = new User({

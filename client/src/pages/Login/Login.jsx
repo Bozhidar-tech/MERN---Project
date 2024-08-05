@@ -21,8 +21,9 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      dispatch(loginStart());
+
       try {
-        dispatch(loginStart());
         const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
@@ -49,12 +50,25 @@ export default function Login() {
         {t('login')}
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="email" placeholder={t('emailPlaceholder')} 
-        className='border p-3 rounded-lg' id='email' onChange={handleChange}/>
-        <input type="password" placeholder={t('passwordPlaceholder')} 
-        className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
-        <button disabled={loading} className='text-white p-3 rounded-lg uppercase hover:opacity-95 
-        disabled:opacity-80' style={{ backgroundColor: '#00B98E' }}>
+        <input 
+          type="email" 
+          placeholder={t('emailPlaceholder')} 
+          className='border p-3 rounded-lg' 
+          id='email' 
+          onChange={handleChange}
+        />
+        <input 
+          type="password" 
+          placeholder={t('passwordPlaceholder')} 
+          className='border p-3 rounded-lg' 
+          id='password' 
+          onChange={handleChange}
+        />
+        <button 
+          disabled={loading} 
+          className='text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' 
+          style={{ backgroundColor: '#00B98E' }}
+        >
           {loading ? t('loading') : t('loginButton')}
         </button>
         <OAuth/>
@@ -68,7 +82,6 @@ export default function Login() {
           <span className='text-red-500'>{t('forgotPasswordLink')}</span>
         </Link>
       </div>
-      
       {error && <p className='text-red-500'>{error}</p>}
     </div>
   )
