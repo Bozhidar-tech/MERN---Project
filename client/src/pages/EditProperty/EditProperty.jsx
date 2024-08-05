@@ -358,7 +358,7 @@ export default function AddProperty() {
               ))}
             <button
               disabled={loadingState || uploading}
-              className="p-4 bg-slate-700 text-white rounded-md uppercase hover:bg-slate-800 disabled:opacity-80"
+              className="p-4 bg-teal-500 text-white rounded-md uppercase hover:bg-teal-600 disabled:opacity-80"
             >
               {loadingState ? t('savingChanges') : t('saveChanges')}
             </button>
