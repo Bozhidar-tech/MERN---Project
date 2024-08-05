@@ -162,5 +162,17 @@
   "propertyListTitle": "Property List:",
   "noPropertiesFound": "No properties found!",
   "loading": "Loading...",
-  "showMore": "Show more"
+  "showMore": "Show more",
+  "termsAndConditionsTitle": "Terms and Conditions",
+  "introduction": "Introduction",
+  "introductionContent": "Welcome to Bozhidar Estate. These Terms and Conditions govern the use of our website and services. By accessing or using our website, you agree to comply with and be bound by these terms.",
+  "intellectualPropertyRights": "Intellectual Property Rights",
+  "intellectualPropertyRightsContent": "All content on this website, including text, graphics, logos, and images, is the property of Bozhidar Estate and is protected by applicable copyright and trademark laws.",
+  "userObligations": "User Obligations",
+  "userObligationsContent": "You agree to use our website only for lawful purposes. You must not use our website in a way that causes or may cause damage to the website or impair its accessibility.",
+  "limitationOfLiability": "Limitation of Liability",
+  "limitationOfLiabilityContent": "Bozhidar Estate shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from your use or inability to use our website or services.",
+  "changesToTerms": "Changes to Terms",
+  "changesToTermsContent": "We reserve the right to modify these Terms and Conditions at any time. We will notify you of any changes by posting the new terms on our website. By continuing to use the website after the changes have been posted, you accept those changes.",
+  "contactUsContent": "If you have any questions about these Terms and Conditions, please contact us at info@example.com."
 }
