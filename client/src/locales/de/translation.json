@@ -91,7 +91,7 @@
     "passwordPlaceholder": "Passwort",
     "loginButton": "Anmelden",
     "registerPrompt": "Sie haben noch kein Konto? ",
-    "registerLink": "Hier registrieren",
+    "registerLink": "Registrieren",
     "forgotPasswordLink": "Passwort vergessen",
     "loginError": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "profile": "Mein Profil",
@@ -175,6 +175,8 @@
     "privacyPolicy": "Datenschutzrichtlinie",
     "disclaimer": "Haftungsausschluss",
     "cookiePolicy": "Cookie-Richtlinie",
-    "helpFaq": "Hilfe & FAQ"
+    "helpFaq": "Hilfe & FAQ",
+    "propertyListTitle": "Immobilienliste:",
+    "searchButton": "Suchen"
   }
   
