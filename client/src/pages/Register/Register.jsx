@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 
 export default function Register() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,13 +21,13 @@ export default function Register() {
     e.preventDefault();
 
     if (!formData.username || !formData.email || !formData.password) {
-      setError(t('all_fields_required'));
+      setErrors([t('all_fields_required')]);
       return;
     }
 
     try {
       setLoading(true);
-      setError(null);
+      setErrors([]);
 
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -41,17 +41,17 @@ export default function Register() {
 
       if (!res.ok) {
         setLoading(false);
-        setError(data.message || t('registration_failed'));
+        setErrors(data.errors ? data.errors.map(error => error.msg) : [data.message || t('registration_failed')]);
         return;
       }
 
       setLoading(false);
-      setError(null);
+      setErrors([]);
       alert(t('registration_successful'));
       navigate('/login');
     } catch (error) {
       setLoading(false);
-      setError(t('unexpected_error'));
+      setErrors([t('unexpected_error')]);
     }
   };
 
@@ -80,7 +80,13 @@ export default function Register() {
           <span className='text-blue-500'>{t('login')}</span>
         </Link>
       </div>
-      {error && <p className='text-red-500'>{error}</p>}
+      {errors.length > 0 && (
+        <div className='mt-4'>
+          {errors.map((error, index) => (
+            <p key={index} className='text-red-500'>{error}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

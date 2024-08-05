@@ -3,25 +3,35 @@ import bcrypt from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import { body, validationResult } from 'express-validator';
 
-export const register = async (req, res) => {
-  try {
-    const salt = await bcrypt.genSalt(12);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const user = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword,
-    });
-    await user.save();
-    return res.status(200).json({ message: "Регистрацията е успешна!" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Възникна грешка. Моля, опитайте отново" });
+export const register = [
+  body('username').isLength({ min: 3 }).withMessage('Потребителското име трябва да е поне 3 символа дълго.'),
+  body('email').isEmail().withMessage('Невалиден имейл адрес.'),
+  body('password').isLength({ min: 6 }).withMessage('Паролата трябва да е поне 6 символа дълга.'),
+
+  async (req, res) => {
+    const errors = validationResult(req);
+    
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
+    try {
+      const salt = await bcrypt.genSalt(12);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      const user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: hashedPassword,
+      });
+      await user.save();
+      return res.status(200).json({ message: "Регистрацията е успешна!" });
+    } catch (error) {
+      return res.status(500).json({ message: "Възникна грешка, моля опитайте отново." });
+    }
   }
-};
-
+];
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
