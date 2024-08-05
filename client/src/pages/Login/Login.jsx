@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../../redux/user/userSlice.js';
+import { loginStart, loginSuccess, loginFailure, clearError } from '../../redux/user/userSlice.js';
 import OAuth from '../../components/OAuth/OAuth.jsx';
 import { useTranslation } from 'react-i18next';
 
@@ -33,16 +33,23 @@ export default function Login() {
         });
         const data = await res.json();
 
-        if (data.success === false) {
-          dispatch(loginFailure(data.message));
-          return;
+        if (res.ok) {
+          dispatch(loginSuccess(data));
+          navigate('/');
+        } else {
+          dispatch(loginFailure(data.message || t('loginError')));
         }
-        dispatch(loginSuccess(data));
-        navigate('/');
       } catch (error) {
         dispatch(loginFailure(t('loginError')));
       }
     };
+
+    useEffect(() => {
+      return () => {
+        dispatch(clearError());
+        localStorage.clear();
+      };
+    }, [dispatch]);
 
   return (
     <div className='p-3 max-w-lg mx-auto'>

@@ -45,33 +45,41 @@ export const register = [
     }
   }
 ];
-export const login = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
 
-    if (!user) {
-      return next(errorHandler(404, "Грешно име или парола!"));
+export const login = [
+  body('email').isEmail().withMessage('Невалиден имейл адрес.'),
+  body('password').isLength({ min: 6 }).withMessage('Паролата трябва да е поне 6 символа дълга.'),
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    try {
+      const user = await User.findOne({ email: req.body.email });
 
-    if (!isPasswordCorrect) {
-      return next(errorHandler(401, "Грешно име или парола!"));
+      if (!user) {
+        return next(errorHandler(404, "Грешно име или парола!"));
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
+
+      if (!isPasswordCorrect) {
+        return next(errorHandler(401, "Грешно име или парола!"));
+      }
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const { password, ...userDetails } = user._doc;
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(userDetails);
+    } catch (error) {
+      next(error);
     }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    const { password: pass, ...rest } = user._doc;
-    res
-      .cookie("access_token", token, { httpOnly: true })
-      .status(200)
-      .json(rest);
-  } catch (error) {
-    next(error);
   }
-};
+];
 
 export const googleLogin = async (req, res, next) => {
   try {

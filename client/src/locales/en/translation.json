@@ -175,5 +175,9 @@
   "changesToTerms": "Changes to Terms",
   "changesToTermsContent": "We reserve the right to modify these Terms and Conditions at any time. We will notify you of any changes by posting the new terms on our website. By continuing to use the website after the changes have been posted, you accept those changes.",
   "contactUsContent": "If you have any questions about these Terms and Conditions, please contact us at info@example.com.",
-  "deletePropertySuccess": "Property has been deleted"
+  "deletePropertySuccess": "Property has been deleted",
+  "emailRequired": "Email is required.",
+  "invalidEmail": "Invalid email.",
+  "passwordRequired": "Password is required.",
+  "passwordMinLength": "Password must be at least 6 characters."
 }
