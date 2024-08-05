@@ -19,10 +19,11 @@ import {
   logoutSuccess,
 } from "../../redux/user/userSlice";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
+import isEqual from 'lodash/isEqual';
 
 export default function Profile() {
-  const { t } = useTranslation(); // Use the translation hook
+  const { t } = useTranslation();
   const fileInput = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
@@ -31,11 +32,27 @@ export default function Profile() {
   const [deletePropertyError, setDeletePropertyError] = useState(false);
   const [successfulUpdate, setSuccessfulUpdate] = useState(false);
   const [formData, setFormData] = useState({});
+  const [initialData, setInitialData] = useState({});
   const [loadingState, setLoadingState] = useState(false);
   const [propertiesError, setPropertiesError] = useState(false);
   const [myProperties, setMyProperties] = useState([]);
   const dispatch = useDispatch();
   const [propertiesVisible, setPropertiesVisible] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      setInitialData({
+        username: currentUser.username,
+        email: currentUser.email,
+        image: currentUser.image
+      });
+      setFormData({
+        username: currentUser.username,
+        email: currentUser.email,
+        image: currentUser.image
+      });
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     if (file) {
@@ -71,8 +88,16 @@ export default function Profile() {
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
   };
 
+  const isFormDataChanged = () => {
+    return !isEqual(formData, initialData);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!isFormDataChanged()) {
+      return;
+    }
+
     setLoadingState(true);
     setTimeout(async () => {
       try {
@@ -242,7 +267,7 @@ export default function Profile() {
           onChange={changesHandler}
         />
         <button
-          disabled={loading || loadingState}
+          disabled={loading || loadingState || !isFormDataChanged()}
           className="text-white p-3 rounded-lg uppercase bg-teal-400 hover:bg-teal-300 disabled:bg-teal-600"
         >
           {loadingState ? t('loading') : t('updateInformation')}
