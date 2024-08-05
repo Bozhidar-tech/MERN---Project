@@ -1,8 +1,8 @@
-import { FaBars } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { FaBars } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -11,7 +11,7 @@ export default function Header() {
   const location = useLocation();
 
   const handleLanguageChange = () => {
-    i18n.changeLanguage(i18n.language === 'bg' ? 'en' : 'bg');
+    i18n.changeLanguage(i18n.language === "bg" ? "en" : "bg");
   };
 
   return (
@@ -31,48 +31,86 @@ export default function Header() {
           </div>
         </div>
         <nav className="hidden sm:flex space-x-4">
-          {location.pathname !== '/' && (
-            <Link to="/" className="hover:text-teal-400">{t('home')}</Link>
+          {location.pathname !== "/" && (
+            <Link to="/" className="hover:text-teal-400">
+              {t("home")}
+            </Link>
           )}
-          <Link to="/about" className="hover:text-teal-400">{t('aboutUs')}</Link>
-          <Link to="/search" className="hover:text-teal-400">{t('search')}</Link>
-          <Link to="/contact" className="hover:text-teal-400">{t('contact')}</Link>
+          <Link to="/about" className="hover:text-teal-400">
+            {t("aboutUs")}
+          </Link>
+          <Link to="/search" className="hover:text-teal-400">
+            {t("search")}
+          </Link>
+          <Link to="/contact" className="hover:text-teal-400">
+            {t("contact")}
+          </Link>
           <Link to="/profile">
             {currentUser ? (
-              <img className="rounded-full h-7 w-7 object-cover" src={currentUser.image} alt="profile" />
+              <img
+                className="rounded-full h-7 w-7 object-cover"
+                src={currentUser.image}
+                alt="profile"
+              />
             ) : (
-              <span className="hover:text-teal-400">{t('login')}</span>
+              <span className="hover:text-teal-400">{t("login")}</span>
             )}
           </Link>
           {!currentUser && (
             <Link to="/register" className="hover:text-teal-400">
-              {t('register')}
+              {t("register")}
             </Link>
           )}
-                    <button
+          <button
             onClick={handleLanguageChange}
             className="bg-teal-400 text-white px-3 py-1 rounded"
           >
-            {i18n.language === 'bg' ? 'EN' : 'BG'}
+            {i18n.language === "bg" ? "EN" : "BG"}
           </button>
         </nav>
       </div>
       {isMenuOpen && (
         <div className="sm:hidden bg-gray-700 p-4">
-          {location.pathname !== '/' && (
-            <Link to="/" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>{t('home')}</Link>
+          {location.pathname !== "/" && (
+            <Link
+              to="/"
+              className="block py-2 text-white hover:text-teal-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("home")}
+            </Link>
           )}
-          <Link to="/about" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>{t('aboutUs')}</Link>
+          <Link
+            to="/about"
+            className="block py-2 text-white hover:text-teal-400"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            {t("aboutUs")}
+          </Link>
           <Link to="/profile">
             {currentUser ? (
-              <img className="rounded-full h-7 w-7 object-cover" src={currentUser.image} alt="profile" onClick={() => setIsMenuOpen(false)} />
+              <img
+                className="rounded-full h-7 w-7 object-cover"
+                src={currentUser.image}
+                alt="profile"
+                onClick={() => setIsMenuOpen(false)}
+              />
             ) : (
-              <span className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>{t('login')}</span>
+              <span
+                className="block py-2 text-white hover:text-teal-400"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("login")}
+              </span>
             )}
           </Link>
           {!currentUser && (
-            <Link to="/register" className="block py-2 text-white hover:text-teal-400" onClick={() => setIsMenuOpen(false)}>
-              {t('register')}
+            <Link
+              to="/register"
+              className="block py-2 text-white hover:text-teal-400"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("register")}
             </Link>
           )}
         </div>
