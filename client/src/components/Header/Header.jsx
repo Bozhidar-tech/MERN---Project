@@ -8,10 +8,12 @@ export default function Header() {
   const { t, i18n } = useTranslation();
   const { currentUser } = useSelector((state) => state.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
-  const handleLanguageChange = () => {
-    i18n.changeLanguage(i18n.language === "bg" ? "en" : "bg");
+  const handleLanguageChange = (language) => {
+    i18n.changeLanguage(language);
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -61,12 +63,42 @@ export default function Header() {
               {t("register")}
             </Link>
           )}
-          <button
-            onClick={handleLanguageChange}
-            className="bg-teal-400 text-white px-3 py-1 rounded"
-          >
-            {i18n.language === "bg" ? "EN" : "BG"}
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="bg-teal-400 text-white px-3 py-1 rounded"
+            >
+              {i18n.language.toUpperCase()}
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg">
+                <button
+                  onClick={() => handleLanguageChange("en")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("bg")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Български
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("fr")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Français
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("de")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Deutsch
+                </button>
+              </div>
+            )}
+          </div>
         </nav>
       </div>
       {isMenuOpen && (
@@ -113,6 +145,42 @@ export default function Header() {
               {t("register")}
             </Link>
           )}
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="block py-2 text-white hover:text-teal-400"
+            >
+              {i18n.language.toUpperCase()}
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg">
+                <button
+                  onClick={() => handleLanguageChange("en")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("bg")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Български
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("fr")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Français
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("de")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Deutsch
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </header>
