@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
 
 export default function Search() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebardata, setSidebardata] = useState({
     searchTerm: "",
     location: "",
@@ -47,10 +50,10 @@ export default function Search() {
         searchTerm: searchTermFromUrl || "",
         location: locationFromUrl || "",
         type: typeFromUrl || "all",
-        parking: parkingFromUrl === "true" ? true : false,
-        furnished: furnishedFromUrl === "true" ? true : false,
-        gas: gasFromUrl === "true" ? true : false,
-        electricity: electricityFromUrl === "true" ? true : false,
+        parking: parkingFromUrl === "true",
+        furnished: furnishedFromUrl === "true",
+        gas: gasFromUrl === "true",
+        electricity: electricityFromUrl === "true",
         sort: sortFromUrl || "created_at",
         order: orderFromUrl || "desc",
       });
@@ -75,40 +78,22 @@ export default function Search() {
   }, [location.search]);
 
   const changesHandler = (e) => {
-    if (
-      e.target.id === "all" ||
-      e.target.id === "house" ||
-      e.target.id === "apartment"
-    ) {
-      setSidebardata({ ...sidebardata, type: e.target.id });
-    }
+    const { id, value, checked } = e.target;
 
-    if (e.target.id === "searchTerm") {
-      setSidebardata({ ...sidebardata, searchTerm: e.target.value });
-    }
-
-    if(e.target.id === "location"){
-      setSidebardata({...sidebardata, location: e.target.value });
-    }
-
-    if (
-      e.target.id === "parking" ||
-      e.target.id === "electricity" ||
-      e.target.id === "gas" ||
-      e.target.id === "furnished"
-    ) {
+    if (id === "all" || id === "house" || id === "apartment") {
+      setSidebardata({ ...sidebardata, type: id });
+    } else if (id === "searchTerm") {
+      setSidebardata({ ...sidebardata, searchTerm: value });
+    } else if (id === "location") {
+      setSidebardata({ ...sidebardata, location: value });
+    } else if (["parking", "electricity", "gas", "furnished"].includes(id)) {
       setSidebardata({
         ...sidebardata,
-        [e.target.id]:
-          e.target.checked || e.target.checked === "true" ? true : false,
+        [id]: checked,
       });
-    }
-
-    if (e.target.id === "sort_order") {
-      const sort = e.target.value.split("_")[0] || "created_at";
-      const order = e.target.value.split("_")[1] || "desc";
-
-      setSidebardata({ ...sidebardata, sort, order });
+    } else if (id === "sort_order") {
+      const [sort, order] = value.split("_");
+      setSidebardata({ ...sidebardata, sort: sort || "created_at", order: order || "desc" });
     }
   };
 
@@ -126,7 +111,6 @@ export default function Search() {
     urlParams.set("order", sidebardata.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
-
   };
 
   const onShowMoreClick = async () => {
@@ -148,31 +132,29 @@ export default function Search() {
       <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen border-gray-600">
         <form onSubmit={submitHandler} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">Критерии</label>
+            <label className="whitespace-nowrap font-semibold">{t('criteria')}</label>
             <input
               type="text"
               id="searchTerm"
-              placeholder="Търси..."
+              placeholder={t('searchPlaceholder')}
               className="border rounded-lg p-3 w-full bg-gray-900 text-white border-gray-600"
               value={sidebardata.searchTerm}
               onChange={changesHandler}
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
-              Град / Село
-            </label>
+            <label className="whitespace-nowrap font-semibold">{t('location')}</label>
             <input
               type="text"
               id="location"
-              placeholder="Местоположение..."
+              placeholder={t('locationPlaceholder')}
               className="border rounded-lg p-3 w-full bg-gray-900 text-white border-gray-600"
               value={sidebardata.location}
               onChange={changesHandler}
             />
           </div>
           <div className="flex gap-2 flex-wrap items-center">
-            <label className="font-semibold">Вид:</label>
+            <label className="font-semibold">{t('typeLabel')}</label>
             <div className="flex gap-2">
               <input
                 type="radio"
@@ -182,7 +164,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "all"}
               />
-              <span>Къщи & Апаратаменти</span>
+              <span>{t('houseAndApartment')}</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -193,7 +175,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "house"}
               />
-              <span>Къщи</span>
+              <span>{t('houses')}</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -204,11 +186,11 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.type === "apartment"}
               />
-              <span>Апартаменти</span>
+              <span>{t('apartments')}</span>
             </div>
           </div>
           <div className="flex gap-2 flex-wrap items-center">
-            <label className="font-semibold">Удобства:</label>
+            <label className="font-semibold">{t('amenities')}</label>
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -217,7 +199,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.furnished}
               />
-              <span>Обзавеждане</span>
+              <span>{t('furnished')}</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -227,7 +209,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.gas}
               />
-              <span>Газ</span>
+              <span>{t('gas')}</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -237,7 +219,7 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.electricity}
               />
-              <span>Електричество</span>
+              <span>{t('electricity')}</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -247,29 +229,28 @@ export default function Search() {
                 onChange={changesHandler}
                 checked={sidebardata.parking}
               />
-              <span>Паркомясто</span>
+              <span>{t('parking')}</span>
             </div>
           </div>
-
           <div className="flex items-center gap-2">
-            <label className="font-semibold">Сортиране по:</label>
+            <label className="font-semibold">{t('sortBy')}</label>
             <select
               onChange={changesHandler}
               defaultValue={"createdAt_desc"}
               className="border rounded-lg p-3 bg-gray-900 text-white border-gray-600"
               id="sort_order"
             >
-              <option value="price_desc">Низходяща цена</option>
-              <option value="price_asc">Възходяща цена</option>
-              <option value="createdAt_desc">Най-нови</option>
-              <option value="createdAt_asc">Най-стари</option>
+              <option value="price_desc">{t('priceDesc')}</option>
+              <option value="price_asc">{t('priceAsc')}</option>
+              <option value="createdAt_desc">{t('newest')}</option>
+              <option value="createdAt_asc">{t('oldest')}</option>
             </select>
           </div>
           <button
             className="text-white p-3 rounded-lg uppercase hover:opacity-95"
             style={{ background: "#00B98E" }}
           >
-            Търси
+            {t('searchButton')}
           </button>
         </form>
       </div>
@@ -278,30 +259,30 @@ export default function Search() {
           className="text-3xl font-semibold border-b p-3 mt-5 border-gray-600"
           style={{ color: "#00B98E" }}
         >
-          Списък с имотите:
+          {t('propertyListTitle')}
         </h1>
         <div className="flex flex-wrap gap-4">
           {!loading && properties.length === 0 && (
-            <p className="text-xl text-slate-300">Няма намерени имоти!</p>
+            <p className="text-xl text-slate-300">{t('noPropertiesFound')}</p>
           )}
           {loading && (
             <p className="text-xl text-slate-300 text-center w-full">
-              Зареждане...
+              {t('loading')}
             </p>
           )}
-
+  
           {!loading &&
             properties &&
             properties.map((property) => (
               <PropertyItem key={property._id} property={property} />
             ))}
-
+  
           {showMore && (
             <button
               onClick={onShowMoreClick}
               className="text-green-400 hover:underline p-7 text-center w-full"
             >
-              Покажи повече
+              {t('showMore')}
             </button>
           )}
         </div>
