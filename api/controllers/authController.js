@@ -4,6 +4,7 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { body, validationResult } from 'express-validator';
+import { StatusCodes } from 'http-status-codes';
 
 export const register = [
   body('username').isLength({ min: 3 }).withMessage('Потребителското име трябва да е поне 3 символа дълго.'),
@@ -14,7 +15,7 @@ export const register = [
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
     }
     
     try {
@@ -24,10 +25,10 @@ export const register = [
 
       if (existingUser) {
         if (existingUser.username === req.body.username) {
-          return res.status(400).json({ errors: [{ msg: 'Потребителското име вече е заето.' }] });
+          return res.status(StatusCodes.BAD_REQUEST).json({ errors: [{ msg: 'Потребителското име вече е заето.' }] });
         }
         if (existingUser.email === req.body.email) {
-          return res.status(400).json({ errors: [{ msg: 'Имейл адресът вече е зает.' }] });
+          return res.status(StatusCodes.BAD_REQUEST).json({ errors: [{ msg: 'Имейл адресът вече е зает.' }] });
         }
       }
 
@@ -39,9 +40,9 @@ export const register = [
         password: hashedPassword,
       });
       await user.save();
-      return res.status(200).json({ message: "Регистрацията е успешна!" });
+      return res.status(StatusCodes.OK).json({ message: "Регистрацията е успешна!" });
     } catch (error) {
-      return res.status(500).json({ message: "Възникна грешка, моля опитайте отново." });
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Възникна грешка, моля опитайте отново." });
     }
   }
 ];
@@ -53,27 +54,27 @@ export const login = [
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: errors.array() });
     }
 
     try {
       const user = await User.findOne({ email: req.body.email });
 
       if (!user) {
-        return next(errorHandler(404, "Грешно име или парола!"));
+        return next(errorHandler(StatusCodes.NOT_FOUND, "Грешно име или парола!"));
       }
 
       const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
 
       if (!isPasswordCorrect) {
-        return next(errorHandler(401, "Грешно име или парола!"));
+        return next(errorHandler(StatusCodes.UNAUTHORIZED, "Грешно име или парола!"));
       }
 
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       const { password, ...userDetails } = user._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
-        .status(200)
+        .status(StatusCodes.OK)
         .json(userDetails);
     } catch (error) {
       next(error);
@@ -89,7 +90,7 @@ export const googleLogin = async (req, res, next) => {
       const { password: pass, ...rest } = user._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
-        .status(200)
+        .status(StatusCodes.OK)
         .json(rest);
     } else {
       const randomPassword = Math.random().toString(36).slice(-8);
@@ -107,7 +108,7 @@ export const googleLogin = async (req, res, next) => {
       const { password: pass, ...rest } = newUser._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
-        .status(200)
+        .status(StatusCodes.OK)
         .json(rest);
     }
   } catch (error) {
@@ -118,7 +119,7 @@ export const googleLogin = async (req, res, next) => {
 export const logout = (req, res) => {
   res
     .clearCookie("access_token")
-    .status(200)
+    .status(StatusCodes.OK)
     .json({ message: "Успешно излизане от акаунта!" });
 };
 
@@ -127,7 +128,7 @@ export const forgotPassword = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return next(errorHandler(404, "Потребителят не е намерен!"));
+    if (!user) return next(errorHandler(StatusCodes.NOT_FOUND, "Потребителят не е намерен!"));
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5m",
@@ -150,9 +151,9 @@ export const forgotPassword = async (req, res, next) => {
 
     mailTransporter.sendMail(mailDetails, function (err, data) {
       if (err) {
-        return next(errorHandler(500, "Неуспешно изпращане на съобщение!"));
+        return next(errorHandler(StatusCodes.INTERNAL_SERVER_ERROR, "Неуспешно изпращане на съобщение!"));
       }
-      res.status(200).json({ message: "Съобщението е изпратено успешно!" });
+      res.status(StatusCodes.OK).json({ message: "Съобщението е изпратено успешно!" });
     });
   } catch (error) {
     next(error);
@@ -170,7 +171,7 @@ export const resetPassword = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     await User.findByIdAndUpdate(id, { password: hashedPassword });
 
-    res.status(200).json({ message: "Паролата Ви бе променена успешно!" });
+    res.status(StatusCodes.OK).json({ message: "Паролата Ви бе променена успешно!" });
   } catch (error) {
     next(error);
   }
@@ -185,7 +186,7 @@ export const isAuthenticated = async (req, res, next) => {
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
-    return res.status(403).json({ message: "Вече сте влезнали в акаунтът си." });
+    return res.status(StatusCodes.FORBIDDEN).json({ message: "Вече сте влезнали в акаунтът си." });
   } catch (err) {
     next();
   }
