@@ -27,14 +27,13 @@ To set up the project locally, follow these steps:
    npm run dev
 
 ### Features
-List the main features of your project here. For example:
 
-User authentication and authorization
-Property listings with detailed information
-Search functionality with various filters
-Add, edit, and remove property listings
-User profile management
-Responsive design
+- User authentication and authorization
+- Property listings with detailed information
+- Search functionality with various filters
+- Add, edit, and remove property listings
+- User profile management
+- Responsive design
 
 ## Technologies Used
 - **Frontend**:
