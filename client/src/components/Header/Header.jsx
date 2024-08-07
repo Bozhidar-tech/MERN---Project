@@ -17,7 +17,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-800 text-white shadow-md border-b-2 border-teal-400 mb-2">
+    <header className="bg-gray-800 text-white shadow-md border-b-2 border-teal-400 mb-2 relative">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-4">
         <Link to="/">
           <h1 className="text-xl font-bold flex items-center">
@@ -66,12 +66,12 @@ export default function Header() {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="bg-teal-400 text-white px-3 py-1 rounded"
+              className="bg-teal-400 text-white px-3 py-1 rounded relative z-20"
             >
               {i18n.language.toUpperCase()}
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg">
+              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg z-30">
                 <button
                   onClick={() => handleLanguageChange("en")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200"
@@ -148,12 +148,12 @@ export default function Header() {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="block py-2 text-white hover:text-teal-400"
+              className="block py-2 text-white hover:text-teal-400 relative z-20"
             >
               {i18n.language.toUpperCase()}
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg">
+              <div className="absolute right-0 mt-2 w-32 bg-white text-gray-800 rounded shadow-lg z-30">
                 <button
                   onClick={() => handleLanguageChange("en")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200"
