@@ -11,30 +11,47 @@ export const updateUser = async (req, res, next) => {
   }
 
   try {
-    if (req.body.password) {
-      req.body.password = bcryptjs.hashSync(req.body.password, 10);
+    const { username, email, password, image } = req.body;
+
+    const existingUser = await User.findOne({
+      $or: [
+        { username: username },
+        { email: email }
+      ],
+      _id: { $ne: req.params.id }
+    });
+
+    if (existingUser) {
+      return next(errorHandler(StatusCodes.CONFLICT, "Потребителското име или имейл вече съществува!"));
+    }
+
+    let updatedPassword = password;
+    if (password) {
+      updatedPassword = bcryptjs.hashSync(password, 10);
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       {
         $set: {
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password,
-          image: req.body.image,
+          username: username,
+          email: email,
+          password: updatedPassword,
+          image: image,
         },
       },
       { new: true }
     );
 
-    const { password, ...rest } = updatedUser._doc;
+    const { password: pw, ...rest } = updatedUser._doc;
     res.status(StatusCodes.OK).json(rest);
   } catch (error) {
+    if (error.code && error.code === 11000) {
+      return next(errorHandler(StatusCodes.CONFLICT, "Потребителското име или имейл вече съществува!"));
+    }
     next(error);
   }
 };
-
 export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(StatusCodes.UNAUTHORIZED, "Можете да изтриете единствено Вашият профил!"));
