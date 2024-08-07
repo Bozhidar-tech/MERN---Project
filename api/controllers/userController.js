@@ -52,13 +52,17 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
 export const deleteUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(StatusCodes.UNAUTHORIZED, "Можете да изтриете единствено Вашият профил!"));
   }
 
   try {
+    await Property.deleteMany({ userRef: req.params.id });
+
     await User.findByIdAndDelete(req.params.id);
+
     res.clearCookie("access_token");
     res.status(StatusCodes.OK).json({ message: "Профилът Ви бе изтрит успешно!" });
   } catch (error) {
